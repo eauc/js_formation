@@ -1,0 +1,160 @@
+#+TITLE: Formation Javascript
+#+AUTHOR: Emmanuel Auclair
+
+* Presentation & History
+** History overview
+** Evolution: ES6/7/...
+   TODO: Talk about Typescript ? compare with ES6/7, intellisense support...
+   Beware of functionnalities not yet official but used everywhere
+** JS The Good Parts
+* Syntax
+  TODO: semi-colon, line feed, instruction/expression/statement stuff
+** Reserved keywords
+   TODO: if for switch case default class...
+* Types & Primitives
+** Primitive Types
+*** undefined
+*** null
+*** NaN
+*** Boolean
+*** Number
+*** String
+*** Array
+    TODO: mutable
+*** Object
+    TODO: hashes/dictionnaries, mutable
+*** Functions
+    TODO: first class, have properties like object (eg prototype, length)
+** Data model
+*** Immutable memory
+    TODO: primitives types are immutable & only one instance of each value in memory
+    when we modify a value we create a new value elsewhere in memory
+    Arrays/Object/Functions are the exceptions
+*** References
+    TODO: every time we name a value in JS, we bind the name to a reference/pointer to the value in memory
+    we cannot change value, only references to memory
+* Basic Operations
+** Arithmetics
+   TODO: short overview of arithmetics
+** Equality
+   TODO: always use compare-by-refs ===, never use cast-compare ==
+   short overview of comparators
+** Control operators
+*** if
+*** switch
+*** for
+    TODO: how can we speak of properties here without first speaking of objects?
+* Numbers
+** IEEE
+   TODO: basic floating point calculation stuff
+   cast to number tricks, don't use, use Number or parse ?
+** NaN
+   TODO: how we can get a NaN, NaN is the only thing not equal to itself
+* Strings
+** Quotes
+   TODO: diff btw ' and ", escape chars, basic props
+** ES6: templates
+   TODO: building strings with `
+** Methods
+   TODO: overview of most useful methods
+* Variables
+** References
+   TODO: variables bind names to references to values in memory
+   changing var value <=> changing the value it points to
+** Scope
+   TODO: local/global
+   global horror show
+   function scope
+** Hoisting
+   TODO: var hoisting horror show
+** Strict mode
+** ES6: const & let
+   TODO: always use const, when to use let
+   sane scope
+* Functions
+** Arguments
+   TODO: passed by reference, arity fn.length, extra/missing args, arguments value
+   args manipulation tricks, variable args
+** Hoisting
+   TODO: function are hoisted and that's great
+** Closure
+   TODO: how it works, memory leak, comparison with thread stack
+** High order functions
+   TODO: callbacks args, closures return, functionnal algorithms
+** this
+   TODO: this keyword overview, default=global=window, object-method call
+   var me = this horror show on callbacks
+** apply & call
+   TODO: differences & when to use, args manipulation, this manipulation
+** ES6: arrow functions
+   TODO: possible syntaxes, this difference, use everywhere
+** ES6: arguments spread
+   TODO: variable arguments, args manipulation
+** ES6: arguments destructuring
+   TODO: how can I speak of this here without first speaking of arrays ?
+* Arrays
+** Methods
+   TODO: basic methods (splice, slice, length, push, pop, concat...)
+   for(var in array)
+*** Array Equality
+** High order methods
+   TODO: filter, map, reduce
+** Typed Arrays
+   TODO: UInt8Array etc
+** ES6: destructuring
+   TODO: introduce destructuring, compare with ES5 code
+** ES6: spread
+   TODO: introduce array manipulations with spread
+   talk about immutability ?
+* Objects
+** Properties
+*** Getting/Setting
+    TODO: ["prop"] .prop, dynamique
+    impact on performances
+*** Deleting
+    TODO: delete, = undefined
+    impact on performances
+*** Methods
+    TODO: invoke, consequences on this
+*** Object Equality
+** ES6: properties shortcut
+** Prototype
+   TODO: explain prototype chain
+   hasOwnProperty, for(var in object)
+** new & Contructor functions
+   TODO: explain how it works, traditionnal pattern
+   impact on performances
+** ES6: Object.create
+   TODO: easy prototype pattern
+** ES6: classes
+   TODO: for OOP fans, not hoisted :(
+** ES7: spread
+   TODO: introduce objects merge with spread
+   talk about immutability ?
+* Asynchronocity
+** Execution model
+   TODO: single threaded, asynchronous
+   Tasks, micro-tasks ?
+** Exceptions
+   TODO: try/catch
+** Callbacks
+   TODO: standard Node form, callback hell, pyramid of doom
+** setTimeout/setInterval
+** ES6: Promises
+   TODO: why, how it works
+   advantages & inconvenients (spread like a virus)
+** ES7: async/await
+   TODO: how it works, inconvenients (spread like a virus)
+* Tools
+** NPM
+** Yarn
+** Eslint
+** Babel
+** Webpack
+** Chrome debugger
+* Misc
+** Node
+** ES6/7/Node modules
+** Date
+** Lodash
+** Immutability
