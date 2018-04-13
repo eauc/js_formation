@@ -1,12 +1,38 @@
 #+TITLE: Formation Javascript
 #+AUTHOR: Emmanuel Auclair
+#+OPTIONS: toc:1
+#+OPTIONS: reveal_center:t reveal_width:1200 reveal_height:800
+#+REVEAL_HLEVEL: 2
+# #+REVEAL_ROOT: ./reveal.js
+#+REVEAL_TRANS: none
+#+REVEAL_THEME: night
+#+REVEAL_DEFAULT_FRAG_STYLE: appear
 
 * Presentation & History
 ** History overview
+
+   Some contents.
+
+   #+BEGIN_NOTES
+   My notes
+   #+END_NOTES
+
 ** Evolution: ES6/7/...
    TODO: Talk about Typescript ? compare with ES6/7, intellisense support...
    Beware of functionnalities not yet official but used everywhere
+
+   #+BEGIN_SRC js :exports both
+   undefined
+   null
+   function toto() {
+     var titit = null;
+   }
+   #+END_SRC
+   #+RESULTS:
+   : undefined
+
 ** JS The Good Parts
+
 * Syntax
   TODO: semi-colon, line feed, instruction/expression/statement stuff
 ** Reserved keywords
