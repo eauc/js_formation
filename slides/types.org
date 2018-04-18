@@ -1,0 +1,312 @@
+** Primitive Types
+*** Basic types
+
+    - nil values
+    #+BEGIN_SRC js
+    undefined
+    null
+    #+END_SRC
+
+    What's the difference ?
+    #+BEGIN_SRC js :exports both :results output
+    console.log(">> typeof undefined ->", typeof(undefined));
+    console.log(">> typeof null ->", typeof(null));
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - typeof operator gives type of things
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    - Booleans
+    #+BEGIN_SRC js :exports both :results output
+    true
+    false
+
+    console.log(">> typeof true ->", typeof(true));
+    #+END_SRC
+
+    #+REVEAL: split
+
+    - Numbers
+    #+BEGIN_SRC js :exports both :results output
+    3.14156
+
+    console.log(">> typeof 5 ->", typeof(5));
+    #+END_SRC
+
+    - NaN
+    #+BEGIN_SRC js :exports both :results output
+    console.log(">> typeof NaN ->", typeof(NaN));
+
+    console.log(">> (NaN === NaN) ->", (NaN === NaN));
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - Numbers are double precision float but sometime get converted to 32bits Integers
+    - Numbers have a few methods: toString, toFixed. They must be invoked on a variable.
+    - NaN is the only thing not equal to itself in JS
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    - strings
+    #+BEGIN_SRC js :exports both :results output
+    console.log(">> typeof \"Hello, world\" ->", typeof("Hello, world"));
+
+    console.log(">>\tHello, world");
+    console.log('>>\tHello, world');
+
+    console.log(">> \"hello world\".length ->", "hello world".length);
+    console.log(">> \"☮ world\".length ->", "☮ world".length);
+    console.log(">> \"☮ world\"[0] ->", "☮ world"[0]);
+    console.log(">> \"☮ world\".charCodeAt(0) ->", "☮ world".charCodeAt(0));
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - strings are not objects, but have (a lot of) methods
+    - strings are UTF16 internally
+    - but most of the time get converted to UTF8 during IOs
+    - most of the time UTF characters count as one character
+    - and Node's sources are expected to be UTF8
+    #+END_NOTES
+
+*** Array
+
+    Creation:
+    #+BEGIN_SRC js :exports both :results output
+    console.log(">> new Array ->", new Array(1, "toto", null, true));
+
+    console.log(">> [] literal ->", [1, "toto", null, true]);
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - prefer literals.
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    Properties:
+    #+BEGIN_SRC js :exports both :results output
+    var myArray = [1,2,"3"];
+    console.log(">> myArray[0] ->", myArray[0]);
+    console.log(">> myArray[3] ->", myArray[3]);
+
+    console.log(">> myArray.length ->", myArray.length);
+
+    myArray[1] = null;
+    console.log(">> myArray[1] = null ->", myArray);
+    myArray[5] = 5;
+    console.log(">> myArray[5] = 5 ->", myArray);
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - arrays can contain different types
+    - accessing entries beyond the end returns undefined
+    - setting entries beyond the end returns sparse arrays
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    Type:
+    #+BEGIN_SRC js :exports both :results output
+    console.log(">> typeof [] ->", typeof([1,2,3]));
+    console.log(">> isArray [] ->", Array.isArray([1,2,3]));
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - typeof is useless for arrays, of course
+    - since ES5 at least we have a type test on Array.isArray
+    #+END_NOTES
+
+*** Object
+    
+    Hashes of <string> to <any>.
+
+    Creation:
+    #+BEGIN_SRC js :exports both :results output
+    console.log(">> new Object ->\n", new Object());
+    console.log(">> {} literal ->\n", {
+      firstName: "Donald",
+      "lastName": "Trump",
+      "pro-fes-sion": "President",
+      "age": 12,
+      "": "brain"
+    });
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - =new Object= only works for empty objects
+    - can quote keys to escape characters invalid in JS identifiers (eg. -)
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    Properties:
+    #+BEGIN_SRC js :exports both :results output
+    var myObject = {
+      1: 1, null: 2,
+      true: 3, undefined: 4,
+    };
+    myObject[{toto: 1}] = 5;
+    myObject[[1,2,3]] = 6;
+
+    console.log(">> Object.keys ->", Object.keys(myObject));
+    console.log(">> Object.values ->", Object.values(myObject));
+
+    console.log(">> myObject[1] ->", myObject[1]);
+    console.log(">> myObject[null] ->", myObject[null]);
+    console.log(">> myObject[true] ->", myObject[true]);
+    console.log(">> myObject[undefined] ->", myObject[undefined]);
+    console.log(">> myObject[{toto:42}] ->", myObject[{toto: 42}]);
+    console.log(">> myObject[[1,2,3]] ->", myObject[[1,2,3]]);
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - you can add keys after creation
+    - keys are always cast to strings - so you better know your casts if you're writting this shit
+    - seriously, don't do this
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    Type:
+    #+BEGIN_SRC js :exports both :results output
+    console.log(">> typeof {} ->", typeof({}));
+    console.log(">> typeof null ->", typeof(null));
+    console.log(">> typeof [] ->", typeof([]));
+    #+END_SRC
+
+    #+BEGIN_SRC js :exports both :results output
+    console.log(">> isPlainObject {} ->", ({} + "") === "[object Object]");
+    console.log(">> isPlainObject null ->", (null + "") === "[object Object]");
+    console.log(">> isPlainObject [] ->", ([] + "") === "[object Object]");
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - typeof is useless for objects, of course
+    - only way to test for plain object is to cast to string, cool
+    - will not work if someone changed .toString() method on object :)
+    - so some people test if object && not array && not null
+    #+END_NOTES
+
+*** Functions
+
+    Creation:
+    #+BEGIN_SRC js :exports both :results output
+    function myFunction() {
+      console.log("This is my function !");
+    }
+
+    myFunction();
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - can have names
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    Arguments and return value:
+    #+BEGIN_SRC js :exports both :results output
+    function myFunction(a, b) {
+      return a + b;
+    };
+
+    console.log(">> myFunction('hello ', 'world') ->", myFunction("hello ", "world"));
+    console.log(">> myFunction('hello ') ->", myFunction("hello "));
+
+    console.log(">> myFunction.length ->", myFunction.length);
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - can have arguments and return values
+    - no check on arguments number when called - args are undefined !
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    Type:
+    #+BEGIN_SRC js :exports both :results output
+    console.log(">> typeof function(){} ->", typeof(function(){}));
+    #+END_SRC
+
+** Data model
+*** Immutable memory
+
+    Strings and numbers are immutable in memory.
+
+    #+BEGIN_SRC js :exports code
+    "Hello, " + "world"
+    #+END_SRC
+
+    In memory, JS will allocate a new string buffer:
+    #+BEGIN_SRC ditaa :file ./assets/build/immut_string.png :cmdline -E :exports results
+    +-----------+    +------------+        +----------------+
+    |cF5D addrA |    |cDF5 addr B |        | c5DF    addr C | 
+    +-----------+    +------------+ -----> +----------------+
+    | "Hello, " |    | "world"    |        | "Hello, world" |
+    +-----------+    +------------+        +----------------+
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - strings and number are immutable in memory
+    - each string/number value is unique in memory
+    - on modification, JS engine allocates new memory to store the result
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    The same with numbers:
+    #+BEGIN_SRC js :exports code
+    5 + 1
+    #+END_SRC
+
+    In memory, JS will allocate a new number:
+    #+BEGIN_SRC ditaa :file ./assets/build/immut_number.png :cmdline -E :exports results
+    +-----------+    +-----------+        +-----------+
+    |c5DF addr A|    |cF5D addr B|        |cDF5 addr C|
+    +-----------+    +-----------+ -----> +-----------+
+    |    5      |    |    1      |        |    6      |
+    +-----------+    +-----------+        +-----------+
+    #+END_SRC
+
+*** Mutable memory
+
+    Arrays and object are mutable in memory.
+
+    #+BEGIN_SRC js :results output :exports both
+    var myArray = [1, 2, 3];
+    myArray[1] = 4;
+    console.log(">> myArray ->", myArray);
+    #+END_SRC
+
+    In memory, JS will modify the array:
+    #+BEGIN_SRC ditaa :file ./assets/build/mut_array.png :cmdline -E :exports results
+    +-----------+        +-----------+
+    |c5DF addr A|        |c5DF addr A|
+    +---+---+---+ -----> +---+---+---+
+    | 1 | 2 | 3 |        | 1 | 4 | 3 |
+    +---+---+---+        +---+---+---+
+    #+END_SRC
+
+    #+REVEAL: split
+
+    The same with objects:
+    #+BEGIN_SRC js :results output :exports both
+    var myObject = {a:1, b:2, c:3};
+    myObject.b = 4;
+    console.log(">> myObject ->", myObject);
+    #+END_SRC
+
+    In memory, JS will modify the array:
+    #+BEGIN_SRC ditaa :file ./assets/build/mut_object.png :cmdline -E :exports results
+    +-----------+        +-----------+
+    |c5DF addr A|        |c5DF addr A|
+    +-----+-----+        +-----+-----+
+    | a   |   1 | -----> | a   |   1 |
+    | b   |   2 |        | b   |   4 |
+    | c   |   3 |        | c   |   3 |
+    +-----+-----+        +-----+-----+
+    #+END_SRC

@@ -16,27 +16,8 @@
 #+INCLUDE: "./slides/syntax.org"
 
 * Types & Primitives
-** Primitive Types
-*** undefined
-*** null
-*** NaN
-*** Boolean
-*** Number
-*** String
-*** Array
-    TODO: mutable
-*** Object
-    TODO: hashes/dictionnaries, mutable
-*** Functions
-    TODO: first class, have properties like object (eg prototype, length)
-** Data model
-*** Immutable memory
-    TODO: primitives types are immutable & only one instance of each value in memory
-    when we modify a value we create a new value elsewhere in memory
-    Arrays/Object/Functions are the exceptions
-*** References
-    TODO: every time we name a value in JS, we bind the name to a reference/pointer to the value in memory
-    we cannot change value, only references to memory
+#+INCLUDE: "./slides/types.org"
+
 * Basic Expressions
 ** Arithmetics
    TODO: short overview of arithmetics
@@ -48,12 +29,6 @@
 *** switch
 *** for
     TODO: how can we speak of properties here without first speaking of objects?
-* Numbers
-** IEEE
-   TODO: basic floating point calculation stuff
-   cast to number tricks, don't use, use Number or parse ?
-** NaN
-   TODO: how we can get a NaN, NaN is the only thing not equal to itself
 * Strings
 ** Quotes
    TODO: diff btw ' and ", escape chars, basic props
