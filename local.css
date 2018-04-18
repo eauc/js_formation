@@ -1,0 +1,19 @@
+.reveal p,
+.reveal ul,
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+    text-align: left;
+    width: 100%;
+}
+
+.reveal pre {
+    background-color: #444;
+    padding: 5px 2px;
+}
+.reveal pre.example {
+    background-color: #455;
+}
+.reveal pre.example::before {
+    content: "Output:\A";
+}

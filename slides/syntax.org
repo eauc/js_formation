@@ -1,0 +1,58 @@
+- literal
+#+BEGIN_SRC js
+5
+"toto"
+{}
+#+END_SRC
+- identifiers
+#+BEGIN_SRC js
+myVar
+#+END_SRC
+- keyword
+#+BEGIN_SRC js
+if
+for
+#+END_SRC
+- operator
+#+BEGIN_SRC js
+=
+>>
+#+END_SRC
+
+#+BEGIN_NOTES
+- identifier
+  - case sensitive
+  - [a-zA-Z0-9_$]
+  - cannot start with a digit
+  - npm package name convention uses dash insure incompatibility
+#+END_NOTES
+
+#+REVEAL: split
+
+- expression
+#+BEGIN_SRC js
+5 * 5
+if (myvar) {}
+#+END_SRC
+- declaration
+#+BEGIN_SRC js
+var myVar
+#+END_SRC
+- statement
+#+BEGIN_SRC js
+var myVar = 5 * 5;
+var otherVar = "toto" // also works
+#+END_SRC
+- program
+#+BEGIN_SRC js :exports both
+var myVar = 5;
+++myVar;
+console.log(">> ", myVar);
+#+END_SRC
+
+#+BEGIN_NOTES
+- comments : // or /* */
+- statement
+  - ends with a =;= or s =\n=
+  - semicolon is, in fact, mostly optional
+#+END_NOTES

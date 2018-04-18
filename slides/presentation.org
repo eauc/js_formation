@@ -1,0 +1,92 @@
+** History overview
+
+   Brendan Eich created the language for Netscape in 1995.
+
+   - Netscape wanted a Scheme for the Web.
+   - Eich liked the Self language.
+   - Marketing imposed a Java-like syntax and "Java" in the name.
+   
+   #+ATTR_REVEAL: :frag roll-in
+   One design constraint: "you have no time".
+
+   #+BEGIN_NOTES
+   - Scheme => functionnal properties (eg. first-class functions).
+   - Self => object-oriented properties (eg. prototypal inheritance).
+   - Java => syntaxe.
+   - One-day-design => one of the most used languages 23years later.
+   #+END_NOTES
+
+   #+REVEAL: split
+
+   Standardized since 1996 by ECMA => ECMAScript.
+
+   Goal: prevent Microsoft from implementing IE-specific features.
+
+   #+ATTR_REVEAL: :frag roll-in
+   Microsoft shipped XMLHttpRequest in 1999.
+
+   #+BEGIN_NOTES
+   - XMLHttpRequest = XHR = most important evolution for JS ever.
+   #+END_NOTES
+
+   #+REVEAL: split
+
+   Let's simplify this:
+   #+BEGIN_SRC dot :file ./assets/build/js_history.png :export results
+   digraph G {
+        rankdir=LR;
+         Javascript -> "ES1-2-3" [label="1995-99"];
+         "ES1-2-3" -> ES4 [label="1999"];
+         "ES1-2-3" -> "ES3.1";
+         "ES3.1" -> ES5 [label="2009"];
+         ES4 -> "ES6-7-8" [style=dotted];
+         ES5 -> "ES6-7-8" [label="2015-16-17"];
+         "ES6-7-8" -> Harmony [style=dotted];
+         ES5 -> TypeScript [style=dashed,label="Microsoft 2012"];
+         "ES1-2-3" -> ActionScript [style=dashed,label="Microsoft"];
+         ActionScript -> Flash [style=dotted];
+   }
+   #+END_SRC
+
+   #+RESULTS:
+   [[file:./assets/build/js_history.png]]
+
+   #+BEGIN_NOTES
+   - ES3.1/ES4 fork in 1999+
+   - ES4 wants full-fledged apps
+   - ES3.1 wants simple evolution - Douglas Crockford
+   - Microsoft ends up doing ActionScript on their side - will power Flash.
+   - 2009 ES4 is ditched, ES3.1 -> ES5 - Brendan Eich
+   - 2012 Microsoft releases TypeScript - for big app.
+   - 2015+ one new version ~each year.
+   - browser implement ES6-7-8 progressively.
+   - Harmony becomes next/test version.
+   - big mess, same ideas/forks every 10 years.
+   #+END_NOTES
+
+** Tools
+
+   #+ATTR_REVEAL: :frag (roll-in)
+   - 2000 AJAX :: Microsoft implements XMLHttpRequest (XHR) in IE.
+   - 2006 JQuery :: first cross-platform library to simplify client dev.
+   - 2008-10 Web Applications :: Chrome/v8 + Node + Angular.
+   - 2015+ Language (r)evolution :: new ES6-7-8 standards, transpilers/compilers, derived languages.
+
+   #+BEGIN_NOTES
+   - Ajax marks the start of dynamic web.
+   - JQuery is the first successful JS library.
+   - Web Applications: start of "serious" JS development.
+   - Languages: explain that JS is used as base for a lot of languages
+     - Web Assembly
+     - parasitic languages eg. Elm Clojurescript
+   #+END_NOTES
+
+** JS The Good Parts
+
+   [[file:assets/js_thegoodparts.jpg]]
+
+   #+BEGIN_NOTES
+   - Douglas Crockford, "father" of ES3.1, created JSLint.
+   - first publication 2008.
+   - there is a beautiful language hidden somewhere in JS.
+   #+END_NOTES
