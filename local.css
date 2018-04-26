@@ -19,5 +19,5 @@
     background-color: #455;
 }
 .reveal pre.example::before {
-    content: "Output:\A";
+    content: "> ";
 }

@@ -1,0 +1,410 @@
+** Data model
+*** Immutable memory
+
+    Strings and numbers are immutable in memory.
+
+    #+BEGIN_SRC js :exports results :results output :session vars-data-model
+    var myVar = "Hello";
+    myVar += ", world";
+    #+END_SRC
+
+    In memory, JS will allocate a new string buffer:
+    #+BEGIN_SRC ditaa :file ./assets/build/immut_string.png :cmdline -E :exports results
+    +-------+                              +-------+
+    | myVar |                              | myVar |
+    +---+---+                              +---+---+
+        |                                      |
+        |                                      |
+    +---+-------+    +------------+        +---+------------+
+    |cF5D addrA |    |cDF5 addr B |        | c5DF    addr C | 
+    +-----------+    +------------+ -----> +----------------+
+    | "Hello"   |    | ", world"  |        | "Hello, world" |
+    +-----------+    +------------+        +----------------+
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - strings and number are immutable in memory
+    - each string/number value is unique in memory
+    - on modification, JS engine allocates new memory to store the result
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    The same with numbers:
+    #+BEGIN_SRC js :exports results :results output :session vars-data-model
+    var myVar = 5;
+    myVar += 1;
+    #+END_SRC
+
+    In memory, JS will allocate a new number:
+    #+BEGIN_SRC ditaa :file ./assets/build/immut_number.png :cmdline -E :exports results
+    +-------+                             +-------+
+    | myVar |                             | myVar |
+    +---+---+                             +---+---+
+        |                                     |
+        |                                     |
+    +---+-------+    +-----------+        +---+-------+
+    |c5DF addr A|    |cF5D addr B|        |cDF5 addr C|
+    +-----------+    +-----------+ -----> +-----------+
+    |    5      |    |    1      |        |    6      |
+    +-----------+    +-----------+        +-----------+
+    #+END_SRC
+
+*** Mutable memory
+
+    Arrays and object are mutable in memory.
+
+    #+BEGIN_SRC js :exports results :results output :session vars-data-model
+    var myVar = [1, 2, 3];
+    myVar[1] = 4;
+    myVar;
+    #+END_SRC
+
+    In memory, JS will modify the array:
+    #+BEGIN_SRC ditaa :file ./assets/build/mut_array.png :cmdline -E :exports results
+    +-------+                    +-------+
+    | myVar |                    | myVar |
+    +---+---+                    +---+---+
+        |                            |
+        |                            |
+    +---+-------+                +---+-------+
+    |c5DF addr A|                |c5DF addr A|
+    +---+---+---+ -------------> +---+---+---+
+    | 1 | 2 | 3 |                | 1 | 4 | 3 |
+    +---+---+---+                +---+---+---+
+    #+END_SRC
+
+    #+REVEAL: split
+
+    The same with objects:
+    #+BEGIN_SRC js :exports results :results output :session vars-data-model
+    var myVar = {a:1, b:2, c:3};
+    myVar.b = 4;
+    myVar;
+    #+END_SRC
+
+    In memory, JS will modify the array:
+    #+BEGIN_SRC ditaa :file ./assets/build/mut_object.png :cmdline -E :exports results
+    +-------+                       +-------+
+    | myVar |                       | myVar |
+    +---+---+                       +---+---+
+        |                               |
+        |                               |
+    +---+-------+                   +---+-------+
+    |c5DF addr A| ----------------> |c5DF addr A|
+    +-----+-----+                   +-----+-----+
+    | a   |   1 |                   | a   |   1 |
+    | b   |   4 |                   | b   |   4 |
+    | c   |   3 |                   | c   |   3 |
+    +-----+-----+                   +-----+-----+
+    #+END_SRC
+
+** Equality
+
+*** Value equality
+
+    #+BEGIN_SRC js :exports results :results output :session vars-equality
+    5 == "5";
+    "" == 0;
+    #+END_SRC
+
+    #+BEGIN_SRC js :exports results :results output :session vars-equality
+    var myArray = [0];
+    myArray == myArray;
+    myArray == !myArray;
+    myArray == [0];
+    #+END_SRC
+
+    #+BEGIN_SRC js :exports results :results output :session vars-equality
+    [1,2,3] == "hello";
+    Array(3) == ",,";
+    #+END_SRC
+
+    #+BEGIN_SRC js :exports results :results output :session vars-equality
+    {a: 1} == {a: 1}
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - value equality does implicit cast.
+    - it cannot be trusted.
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    NEVER use ==
+
+*** Identity equality
+
+    Compares adresses of values.
+
+    Strings & Numbers.
+    #+BEGIN_SRC js :exports results :results output :session vars-equality
+    var myString = "hello";
+    myString === myString;
+    myString === "hello";
+    "hello" === "hello";
+    #+END_SRC
+
+    #+BEGIN_SRC js :exports results :results output :session vars-equality
+    var myNumber = 5;
+    myNumber === myNumber;
+    myNumber === 5;
+    5 === 5;
+    #+END_SRC
+
+    #+REVEAL: split
+
+    In JS memory, each scalar value (String/Number) is stored only once.
+    - you only get one instance of the string ="hello"=.
+    - you only get one instance of the number =5=.
+
+    #+ATTR_REVEAL: :frag roll-in
+    That's why adress equality does what you expect on scalar values.
+
+    #+REVEAL: split
+
+    Objects & Arrays:
+    #+BEGIN_SRC js :exports results :results output :session vars-equality
+    var myArray = [1, 2, 3];
+    myArray === myArray;
+    myArray === [1, 2, 3];
+    #+END_SRC
+
+    #+BEGIN_SRC js :exports results :results output :session vars-equality
+    var myObject = {a: "hello"};
+    myObject === myObject;
+    myObject === {a: "hello"};
+    #+END_SRC
+
+    #+REVEAL: split
+
+    In JS:
+    - each object/array literal refers to a new instance in memory.
+    - each object/array created will have a different adress.
+
+    #+ATTR_REVEAL: :frag roll-in
+    You'll need custom functions to deeply compare objects & arrays values.
+
+** Scope
+
+*** Global scope
+
+   Three ways to define a global variable:
+   #+BEGIN_SRC js :exports code :results output :session vars-global-scope
+   // var declaration in top scope
+   var myString = "hello";
+
+   // directly extend global/window
+   global.myNumber = 5;
+
+   // omit var keyword in declaration, in any scope
+   myBool = true;
+   #+END_SRC
+
+   #+BEGIN_SRC js :exports results :results output :session vars-global-scope
+   global.myString;
+   global.myNumber;
+   global.myBool;
+   #+END_SRC
+
+   Node =global= <=> Browser =window=
+
+*** Local scope
+
+   JS variables are function-scoped:
+   #+BEGIN_SRC js :exports code :results output :session vars-local-scope
+   var myGlobalVar = "global var";
+
+   function myFunction() {
+     var myLocalVar = "local var";
+     console.log("inside function, myGlobalVar >>", myGlobalVar);
+     console.log("inside function, myLocalVar >>", myLocalVar);
+   }
+   #+END_SRC
+
+   #+BEGIN_SRC js :exports results :results output :session vars-local-scope
+   myFunction();
+   #+END_SRC
+
+   #+BEGIN_SRC js :exports results :results output :session vars-local-scope
+   myGlobalVar;
+   try {
+     myLocalVar;
+   } catch(error) {
+     error.message;
+   }
+   #+END_SRC
+
+*** Hoisting
+
+   Vars are "hoisted".
+   #+BEGIN_SRC js :exports code :results output :session vars-hoisting
+   var myVar = "global value";
+   function myFunction() {
+     console.log("#1 >>", myVar);
+     if (myVar) {
+       var myVar = "yep";
+     }
+     if (!myVar) {
+       var myVar = "nope";
+     }
+     console.log("#2 >>", myVar);
+   }
+   #+END_SRC
+
+   #+BEGIN_SRC js :exports results :results output :session vars-hoisting
+   myVar;
+   myFunction();
+   #+END_SRC
+   
+   #+BEGIN_NOTES
+   - vars declarations are pulled to the top of their scope.
+   - BUT the value affectation stays on the declaration line :(
+   #+END_NOTES
+
+   #+REVEAL: split
+
+   The previous code is equivalent to:
+   #+BEGIN_SRC js :exports code
+   var myVar = "global value";
+   function myFunction() {
+     var myVar;
+     console.log("#1 >>", myVar);
+     if (myVar) {
+       myVar = "yep";
+     }
+     if (!myVar) {
+       myVar = "nope";
+     }
+     console.log("#2 >>", myVar);
+   }
+   #+END_SRC
+
+** Strict mode
+
+   Previously in Javascript...
+   #+BEGIN_SRC js :exports code
+   function myFunction() {
+     // accidently creates a global var
+     myVar = 5;
+   }
+   // accidently creates a global var
+   var myGlobal = 5;
+   myGlobale =42;
+   #+END_SRC
+
+   #+REVEAL: split
+
+   Strict mode:
+   - throws exception on accidental global creation.
+   - prevents various naming errors in object literals, function arguments.
+
+   To enable: simply write this line at top of file/function.
+   #+BEGIN_SRC js
+   "use strict";
+   #+END_SRC
+
+   Enabled by default in ES6 modules.
+
+   #+REVEAL: split
+
+   Always enable strict mode.
+
+** ES6: const
+
+   =const= is block-scoped.
+   
+   #+BEGIN_SRC js :exports code :results output :session vars-const
+   function myFunction() {
+     const myVar = "local value";
+     console.log("#1 >>", myVar);
+     if(myVar) {
+       const myVar = "if value";
+       console.log("#2 >>", myVar);
+     }
+     console.log("#3 >>", myVar);
+     return myVar;
+   }
+   #+END_SRC
+
+   #+BEGIN_SRC js :exports results :results output :session vars-const
+   myFunction();
+   #+END_SRC
+
+   #+REVEAL: split
+
+   =const= is not hoisted.
+   #+BEGIN_SRC js :exports code :results output :session vars-const
+   const myVar = "global value";
+   function myFunction() {
+     console.log("#1 >>", myVar);
+     if(myVar) {
+       const myVar = "if value";
+       console.log("#2 >>", myVar);
+     }
+     return myVar;
+   }
+   #+END_SRC
+
+   #+BEGIN_SRC js :exports results :results output :session vars-const
+   myFunction();
+   #+END_SRC
+
+   #+REVEAL: split
+
+   =const= variables cannot be re-assigned to another adress.
+   #+BEGIN_SRC js :exports both :results output
+   const myValue = 42;
+   try {
+     myValue = 71;
+   } catch(error) {
+     console.log(`Error: ${error.message}`);
+   }
+   #+END_SRC
+
+   #+RESULTS:
+   : Error: Assignment to constant variable.
+
+   [[./assets/build/immut_number.png]]
+
+   #+REVEAL: split
+
+   =const= does not change the mutability of the value.
+   #+BEGIN_SRC js :exports both :results value
+   const myValue = {a: 1};
+   myValue.a = 2;
+   return myValue;
+   #+END_SRC
+
+   #+RESULTS:
+   : { a: 2 }
+
+   [[./assets/build/mut_object.png]]
+
+   #+REVEAL: split
+
+   Always use =const= for all your variables.
+
+   #+BEGIN_NOTES
+   - const is scoped the sane way.
+   - const tells the reader that this variable's meaning will never change.
+   #+END_NOTES
+
+*** ES6: let
+
+   ES6 also defines =let=.
+
+   =let= is block-scoped, the same way as =const=.
+
+   =let= allows value re-assignement.
+
+   #+REVEAL: split
+
+   Avoid let as much as possible.
+   You can write entire applications without using =let=.
+
+   #+BEGIN_NOTES
+   - let should be used only to warn the reader that the variable's meaning may change.
+   - or that the current value is temporary.
+   - most of the time people use let to implement a poor man's reduce, or to build strings in multiple steps instead of using join.
+   #+END_NOTES
