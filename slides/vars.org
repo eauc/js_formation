@@ -3,12 +3,15 @@
 
     Strings and numbers are immutable in memory.
 
+    #+NAME: vars-model-string
     #+BEGIN_SRC js :exports results :results output :session vars-data-model
     var myVar = "Hello";
     myVar += ", world";
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
     In memory, JS will allocate a new string buffer:
+    #+NAME: vars-models-string-diag
     #+BEGIN_SRC ditaa :file ./assets/build/immut_string.png :cmdline -E :exports results
     +-------+                              +-------+
     | myVar |                              | myVar |
@@ -22,6 +25,9 @@
     +-----------+    +------------+        +----------------+
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-models-string-diag
+
     #+BEGIN_NOTES
     - strings and number are immutable in memory
     - each string/number value is unique in memory
@@ -31,12 +37,16 @@
     #+REVEAL: split
 
     The same with numbers:
+
+    #+NAME: vars-model-number
     #+BEGIN_SRC js :exports results :results output :session vars-data-model
     var myVar = 5;
     myVar += 1;
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
     In memory, JS will allocate a new number:
+    #+NAME: vars-model-number-diag
     #+BEGIN_SRC ditaa :file ./assets/build/immut_number.png :cmdline -E :exports results
     +-------+                             +-------+
     | myVar |                             | myVar |
@@ -50,17 +60,23 @@
     +-----------+    +-----------+        +-----------+
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-model-number-diag
+
 *** Mutable memory
 
     Arrays and object are mutable in memory.
 
+    #+NAME: vars-model-array
     #+BEGIN_SRC js :exports results :results output :session vars-data-model
     var myVar = [1, 2, 3];
     myVar[1] = 4;
     myVar;
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
     In memory, JS will modify the array:
+    #+NAME: vars-model-array-diag
     #+BEGIN_SRC ditaa :file ./assets/build/mut_array.png :cmdline -E :exports results
     +-------+                    +-------+
     | myVar |                    | myVar |
@@ -74,16 +90,23 @@
     +---+---+---+                +---+---+---+
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-model-array-diag
+
     #+REVEAL: split
 
     The same with objects:
+
+    #+NAME: vars-model-object
     #+BEGIN_SRC js :exports results :results output :session vars-data-model
     var myVar = {a:1, b:2, c:3};
     myVar.b = 4;
     myVar;
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
     In memory, JS will modify the array:
+    #+NAME: var-model-objects-diag
     #+BEGIN_SRC ditaa :file ./assets/build/mut_object.png :cmdline -E :exports results
     +-------+                       +-------+
     | myVar |                       | myVar |
@@ -99,15 +122,22 @@
     +-----+-----+                   +-----+-----+
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: var-model-objects-diag
+
 ** Equality
 
 *** Value equality
 
+    ~==~ uses implicit casts
+
+    #+NAME: vars-equal-fun-1
     #+BEGIN_SRC js :exports results :results output :session vars-equality
     5 == "5";
     "" == 0;
     #+END_SRC
 
+    #+NAME: vars-equal-fun-2
     #+BEGIN_SRC js :exports results :results output :session vars-equality
     var myArray = [0];
     myArray == myArray;
@@ -115,14 +145,17 @@
     myArray == [0];
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-equal-fun-2
+
+    #+NAME: vars-equal-fun-3
     #+BEGIN_SRC js :exports results :results output :session vars-equality
     [1,2,3] == "hello";
     Array(3) == ",,";
     #+END_SRC
 
-    #+BEGIN_SRC js :exports results :results output :session vars-equality
-    {a: 1} == {a: 1}
-    #+END_SRC
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-equal-fun-3
 
     #+BEGIN_NOTES
     - value equality does implicit cast.
@@ -131,13 +164,28 @@
 
     #+REVEAL: split
 
+    #+NAME: vars-equal-fun-4
+    #+BEGIN_SRC js :exports results :results output :session vars-equality
+    var a = [1, 2, 3];
+    var b = [1, 2, 3];
+    var c = "1,2,3";
+    a == c;
+    b == c;
+    a == b;
+    #+END_SRC
+
+    #+REVEAL: split
+
     NEVER use ==
 
 *** Identity equality
 
-    Compares adresses of values.
+    ~===~ compares adresses of values.
 
+    #+ATTR_REVEAL: :frag roll-in
     Strings & Numbers.
+
+    #+NAME: vars-equal-string
     #+BEGIN_SRC js :exports results :results output :session vars-equality
     var myString = "hello";
     myString === myString;
@@ -145,12 +193,19 @@
     "hello" === "hello";
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-equal-string
+
+    #+NAME: vars-equal-number
     #+BEGIN_SRC js :exports results :results output :session vars-equality
     var myNumber = 5;
     myNumber === myNumber;
     myNumber === 5;
     5 === 5;
     #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-equal-number
 
     #+REVEAL: split
 
@@ -159,22 +214,50 @@
     - you only get one instance of the number =5=.
 
     #+ATTR_REVEAL: :frag roll-in
-    That's why adress equality does what you expect on scalar values.
+    #+NAME: vars-uniq-string
+    #+BEGIN_SRC js :exports code
+    var stringA = "hello";
+    var stringB = "hello";
+    #+END_SRC
+
+    #+NAME: vars-uniq-string-diag
+    #+BEGIN_SRC ditaa :file ./assets/build/uniq_string.png :cmdline -E :exports results
+    +---------+               +---------+
+    | stringA |               | stringB |
+    +---+-----+               +---+-----+
+        |                         |
+        +-------------------------+
+        |
+    +---+-------+
+    |cF5D addrA |
+    +-----------+
+    | "Hello"   |
+    +-----------+
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-uniq-string-diag
 
     #+REVEAL: split
 
     Objects & Arrays:
+
+    #+NAME: vars-equal-array
     #+BEGIN_SRC js :exports results :results output :session vars-equality
     var myArray = [1, 2, 3];
     myArray === myArray;
     myArray === [1, 2, 3];
     #+END_SRC
 
+    #+NAME: vars-equal-object
     #+BEGIN_SRC js :exports results :results output :session vars-equality
     var myObject = {a: "hello"};
     myObject === myObject;
     myObject === {a: "hello"};
     #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-equal-object
 
     #+REVEAL: split
 
@@ -183,6 +266,31 @@
     - each object/array created will have a different adress.
 
     #+ATTR_REVEAL: :frag roll-in
+    #+NAME: vars-uniq-object
+    #+BEGIN_SRC js :exports code
+    var objectA = {a: 1};
+    var objectB = {a: 1};
+    #+END_SRC
+
+    #+NAME: vars-uniq-object-diag
+    #+BEGIN_SRC ditaa :file ./assets/build/uniq_object.png :cmdline -E :exports results
+    +---------+              +---------+
+    | objectA |              | objectB |
+    +---+-----+              +---+-----+
+        |                        |
+        |                        |
+    +---+-------+            +---+-------+
+    |cF5D addr A|            |c5DF addr B|
+    +-----+-----+            +-----+-----+
+    | a   |   1 |            | a   |   1 |
+    +-----+-----+            +-----+-----+
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: vars-uniq-object-diag
+
+    #+REVEAL: split
+
     You'll need custom functions to deeply compare objects & arrays values.
 
 ** Scope
@@ -190,6 +298,7 @@
 *** Global scope
 
    Three ways to define a global variable:
+   #+NAME: vars-global-defs
    #+BEGIN_SRC js :exports code :results output :session vars-global-scope
    // var declaration in top scope
    var myString = "hello";
@@ -201,17 +310,23 @@
    myBool = true;
    #+END_SRC
 
+   #+NAME: vars-global-defs-2
    #+BEGIN_SRC js :exports results :results output :session vars-global-scope
    global.myString;
    global.myNumber;
    global.myBool;
    #+END_SRC
 
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: vars-global-defs-2
+
+   #+ATTR_REVEAL: :frag roll-in
    Node =global= <=> Browser =window=
 
 *** Local scope
 
    JS variables are function-scoped:
+   #+NAME: vars-local-scope
    #+BEGIN_SRC js :exports code :results output :session vars-local-scope
    var myGlobalVar = "global var";
 
@@ -222,10 +337,15 @@
    }
    #+END_SRC
 
+   #+NAME: vars-local-scope-2
    #+BEGIN_SRC js :exports results :results output :session vars-local-scope
    myFunction();
    #+END_SRC
 
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: vars-local-scope-2
+
+   #+NAME: var-local-scope-3
    #+BEGIN_SRC js :exports results :results output :session vars-local-scope
    myGlobalVar;
    try {
@@ -235,9 +355,13 @@
    }
    #+END_SRC
 
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: var-local-scope-3
+
 *** Hoisting
 
    Vars are "hoisted".
+   #+NAME: var-local-hoisting
    #+BEGIN_SRC js :exports code :results output :session vars-hoisting
    var myVar = "global value";
    function myFunction() {
@@ -252,10 +376,14 @@
    }
    #+END_SRC
 
+   #+NAME: vars-local-hoisting-2
    #+BEGIN_SRC js :exports results :results output :session vars-hoisting
    myVar;
    myFunction();
    #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: vars-local-hoisting-2
    
    #+BEGIN_NOTES
    - vars declarations are pulled to the top of their scope.
@@ -265,6 +393,7 @@
    #+REVEAL: split
 
    The previous code is equivalent to:
+   #+NAME: vars-local-hoisting-3
    #+BEGIN_SRC js :exports code
    var myVar = "global value";
    function myFunction() {
@@ -314,6 +443,7 @@
 
    =const= is block-scoped.
    
+   #+NAME: vars-const-scope
    #+BEGIN_SRC js :exports code :results output :session vars-const
    function myFunction() {
      const myVar = "local value";
@@ -327,13 +457,18 @@
    }
    #+END_SRC
 
+   #+NAME: vars-const-scope-2
    #+BEGIN_SRC js :exports results :results output :session vars-const
    myFunction();
    #+END_SRC
 
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: vars-const-scope-2
+
    #+REVEAL: split
 
    =const= is not hoisted.
+   #+NAME: vars-const-hoist
    #+BEGIN_SRC js :exports code :results output :session vars-const
    const myVar = "global value";
    function myFunction() {
@@ -346,13 +481,18 @@
    }
    #+END_SRC
 
+   #+NAME: vars-const-hoist-2
    #+BEGIN_SRC js :exports results :results output :session vars-const
    myFunction();
    #+END_SRC
 
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: vars-const-hoist-2
+
    #+REVEAL: split
 
    =const= variables cannot be re-assigned to another adress.
+   #+NAME: var-const-reassign
    #+BEGIN_SRC js :exports both :results output
    const myValue = 42;
    try {
@@ -362,23 +502,26 @@
    }
    #+END_SRC
 
-   #+RESULTS:
-   : Error: Assignment to constant variable.
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: var-const-reassign
 
+   #+ATTR_REVEAL: :frag roll-in
    [[./assets/build/immut_number.png]]
 
    #+REVEAL: split
 
    =const= does not change the mutability of the value.
+   #+NAME: var-const-mutable
    #+BEGIN_SRC js :exports both :results value
    const myValue = {a: 1};
    myValue.a = 2;
    return myValue;
    #+END_SRC
 
-   #+RESULTS:
-   : { a: 2 }
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: var-const-mutable
 
+   #+ATTR_REVEAL: :frag roll-in
    [[./assets/build/mut_object.png]]
 
    #+REVEAL: split
@@ -394,13 +537,16 @@
 
    ES6 also defines =let=.
 
+   #+ATTR_REVEAL: :frag roll-in
    =let= is block-scoped, the same way as =const=.
 
+   #+ATTR_REVEAL: :frag roll-in
    =let= allows value re-assignement.
 
    #+REVEAL: split
 
-   Avoid let as much as possible.
+   Avoid =let= as much as possible.
+
    You can write entire applications without using =let=.
 
    #+BEGIN_NOTES

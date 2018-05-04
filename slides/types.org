@@ -8,11 +8,21 @@
     #+END_SRC
 
     What's the difference ?
+    #+NAME: typeof-nil
     #+BEGIN_SRC js :exports results :results output :session basic-types
     typeof(undefined);
     typeof(null);
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: typeof-nil
+
+    
+    #+ATTR_REVEAL: :frag roll-in
+    To test if a value exists:
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+NAME: is-nil
     #+BEGIN_SRC js
     function isNil(value) {
       return value === undefined ||
@@ -25,40 +35,53 @@
     #+END_NOTES
 
 *** Booleans
-    #+BEGIN_SRC js
-    true
-    false
-    #+END_SRC
 
+    #+NAME: typeof-bool
     #+BEGIN_SRC js :exports results :results output :session basic-types
     typeof(true);
     #+END_SRC
 
-*** Numbers
-    #+BEGIN_SRC js
-    3.14156
-    #+END_SRC
+    #+RESULTS: typeof-bool
 
+*** Numbers
+
+    #+NAME: typeof-number
     #+BEGIN_SRC js :exports results :results output :session basic-types
     typeof(5);
     #+END_SRC
 
+    #+RESULTS: typeof-number
+
+    #+ATTR_REVEAL: :frag roll-in
     - NaN
+    #+NAME: typeof-nan
     #+BEGIN_SRC js :exports results :results output :session basic-types
     typeof(NaN);
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: typeof-nan
+
+    #+ATTR_REVEAL: :frag roll-in
+    To test for NaN:
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+NAME: is-nan
     #+BEGIN_SRC js :exports code :results output :session basic-types
     function isNaN(value) {
       return value !== value;
     }
     #+END_SRC
 
+    #+NAME: is-nan-calls
     #+BEGIN_SRC js :exports results :results output :session basic-types
     isNaN(NaN);
     isNaN(5);
     isNaN(null);
     #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: is-nan-calls
 
     #+BEGIN_NOTES
     - typeof NotANumber is 'number', of course :D
@@ -66,24 +89,36 @@
     #+END_NOTES
 
 *** Strings
+
+    #+NAME: typeof-string
     #+BEGIN_SRC js :exports results :results output :session basic-types
     typeof("Hello, world");
     #+END_SRC
 
 *** Functions
+
+    #+NAME: typeof-function
     #+BEGIN_SRC js :exports results :results output :session function-types
     typeof(function(){});
     #+END_SRC
 
 *** Arrays
 
+    Of course:
+    #+NAME: typeof-array
     #+BEGIN_SRC js :exports results :results output :session array-types
     typeof([1,2,3]);
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    Since ES5:
+    #+NAME: is-array
     #+BEGIN_SRC js :exports results :results output :session array-types
     Array.isArray([1,2,3]);
     #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: is-array
 
     #+BEGIN_NOTES
     - typeof is useless for arrays, of course
@@ -92,29 +127,37 @@
 
 *** Objects
 
+    Lots of stuff are "objects":
+    #+NAME: typeof-object
     #+BEGIN_SRC js :exports results :results output :session object-types
     typeof({});
     typeof(null);
     typeof([]);
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
     Casting to string can help:
+
+    #+NAME: typeof-obj-cast-string
     #+BEGIN_SRC js :exports results :results output :session object-types
     String({});
     String(null);
     String([]);
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: typeof-obj-cast-string
+
     #+BEGIN_NOTES
     - typeof is useless for objects, of course
     - only way to test for plain object is to cast to string, cool
     - will not work if someone changed .toString() method on object :)
-    - so some people test if object && not array && not null
     #+END_NOTES
 
     #+REVEAL: split
 
     Only one sure way:
+    #+NAME: is-plain-objet
     #+BEGIN_SRC js :exports code :results output :session object-types
     function isPlainObject(value) {
       return typeof(value) === "object" &&
@@ -123,11 +166,19 @@
     }
     #+END_SRC
 
+    #+NAME: is-plain-object-calls
     #+BEGIN_SRC js :exports results :results output :session object-types
     isPlainObject({});
     isPlainObject(null);
     isPlainObject([]);
     #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: is-plain-object-calls
+
+    #+BEGIN_NOTES
+    - only way is to test if object && not array && not null
+    #+END_NOTES
 
     #+REVEAL: split
 
@@ -138,23 +189,33 @@
    [[file:assets/implicit_casts.jpg]]
 
 *** Type Casts
+
     Casts in JS are "fun":
+    #+NAME: casts-fun
     #+BEGIN_SRC js :exports results :results output :session casts-types
     "5" + 4 - 4;
       +"5" + 4 - 4;
       +"45hello";
     #+END_SRC
 
+    #+NAME: casts-fun-shifts
     #+BEGIN_SRC js :exports results :results output :session casts-types
     "3.14156" >> 0;
     "45hello" >> 0;
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: casts-fun-shifts
+
+    #+NAME: casts-fun-objects
     #+BEGIN_SRC js :exports results :results output :session casts-types
     []+{};
     {}+[];
     {}+{};
     #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: casts-fun-objects
 
     #+BEGIN_NOTES
     - JS casts are unpredicable.
@@ -163,7 +224,9 @@
     #+END_NOTES
 
 *** To Number
+
     =Number=
+    #+NAME: casts-number
     #+BEGIN_SRC js :exports results :results output :session casts-types
     Number(3.14);
     Number("3.14");
@@ -184,6 +247,7 @@
     #+REVEAL: split
 
     =parseFloat=
+    #+NAME: casts-parsefloat
     #+BEGIN_SRC js :exports results :results output :session casts-types
     parseFloat("3.14");
     parseFloat("3.14 hello");
@@ -204,6 +268,7 @@
     #+REVEAL: split
 
     =parseInt=
+    #+NAME: casts-parseint
     #+BEGIN_SRC js :exports results :results output :session casts-types
     parseInt("3");
     parseInt("3.14");
@@ -219,7 +284,9 @@
     #+END_NOTES
 
 *** To Strings
+
     =String=
+    #+NAME: casts-string
     #+BEGIN_SRC js :exports results :results output :session casts-types
     String("hello");
     String(3.14);
@@ -238,6 +305,7 @@
     #+REVEAL: split
 
     =JSON.stringify=
+    #+NAME: casts-stringify
     #+BEGIN_SRC js :exports results :results output :session casts-types
     JSON.stringify("hello");
     JSON.stringify(3.14);
@@ -262,23 +330,35 @@
     var number = 9.656;
     #+END_SRC
 
+    #+NAME: casts-tofixed
     #+BEGIN_SRC js :exports results :results output :session casts-types
     number.toFixed(0);
     number.toFixed(2);
     number.toFixed(4);
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: casts-tofixed
+
+    #+NAME: casts-toexpo
     #+BEGIN_SRC js :exports results :results output :session casts-types
     number.toExponential(0);
     number.toExponential(2);
     number.toExponential(4);
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: casts-toexpo
+
+    #+NAME: casts-toprecision
     #+BEGIN_SRC js :exports results :results output :session casts-types
-    number.toPrecision();
+    Number.ToPrecision();
     number.toPrecision(2);
     number.toPrecision(4);
     #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: casts-toprecision
 
     #+BEGIN_NOTES
     - Number has useful function to convert to fixed strings.
@@ -288,6 +368,7 @@
     #+REVEAL: split
 
     ES6 templates: basic cast to String
+    #+NAME: casts-string-template
     #+BEGIN_SRC js :exports results :results output :session casts-types
     `string: ${3.14}`;
     `number: ${3.14}`;
@@ -304,7 +385,9 @@
     #+END_NOTES
 
 *** To Booleans
+
     =Boolean=
+    #+NAME: casts-bool
     #+BEGIN_SRC js :exports results :results output :session casts-types
     Boolean(true);
     Boolean("hello");
@@ -334,4 +417,4 @@
     No perfect way to cast a value to Number in JS :-( =parseFloat()= is the most sensible.
 
     #+ATTR_REVEAL: :frag roll-in
-    Use JSON.stringify() to convert values to string.
+    Use JSON.stringify/parse() to convert values to/from string.
