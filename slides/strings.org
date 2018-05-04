@@ -1,0 +1,29 @@
+
+  UTF characters:
+  #+BEGIN_SRC js :exports results :results output :session basic-types
+  "☮ world".length;
+  "☮ world"[0];
+  "☮ world".charCodeAt(0);
+  #+END_SRC
+
+  #+BEGIN_NOTES
+  - strings are UTF16 internally
+  - but most of the time get converted to UTF8 during IOs
+  - most of the time UTF characters count as one character
+  - and Node's sources are expected to be UTF8
+  #+END_NOTES
+
+  ES6 templates:
+  #+BEGIN_SRC js :exports results :results output :session basic-types
+  var myVar = "world";
+  `Hello, ${myVar}`;
+  #+END_SRC
+
+  #+BEGIN_SRC js :exports results :results output :session basic-types
+  var myObject = {a: 1};
+  `myObject=${myObject}`;
+  #+END_SRC
+
+  #+BEGIN_SRC js :exports results :results output :session basic-types
+  `myObject=${JSON.stringify(myObject)}`;
+  #+END_SRC
