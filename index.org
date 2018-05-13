@@ -5,7 +5,7 @@
 #+REVEAL_HLEVEL: 2
 #+REVEAL_ROOT: ./reveal.js
 #+REVEAL_TRANS: none
-#+REVEAL_THEME: night
+#+REVEAL_THEME: serif
 #+REVEAL_DEFAULT_FRAG_STYLE: appear
 #+REVEAL_EXTRA_CSS: ./local.css
 
