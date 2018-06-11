@@ -1,0 +1,897 @@
+** Arguments
+
+   Arguments are passed by reference
+
+   #+NAME: func-args-refs
+   #+BEGIN_SRC javascript :exports both :session functions-args
+   var myString = "hello";
+   var myObject = {a: 1};
+
+   function compareRefs(stringArg, objectArg) {
+     return [
+       stringArg === myString,
+       objectArg === myObject
+     ];
+   }
+
+   compareRefs(myString, myObject);
+   #+END_SRC
+
+   #+REVEAL: split
+
+    #+NAME: func-args-refs-schema
+    #+BEGIN_SRC ditaa :file ./assets/build/func_args_refs.png :cmdline -E :exports results
+    +-------+--+   +-----------+      +-------+--+   +-----------+
+    | myString |   | stringArg |      | myObject |   | objectArg |
+    +---+---+--+   +-----+-----+      +---+---+--+   +-----+-----+
+        |                |                |                |
+        +----------------+                +----------------+
+        |                                 |
+    +---+-------+                     +---+-------+
+    |cF5D addrA |                     |c5DF addrB |
+    +-----------+                     +-----+-----+
+    | "Hello"   |                     | a   |   1 |
+    +-----------+                     +-----+-----+
+
+    #+END_SRC
+
+   #+REVEAL: split
+
+   If you modify the arguments...
+
+   #+NAME: func-args-modify
+   #+BEGIN_SRC javascript :exports code :session functions-args-modify
+   var myString = "hello";
+   var myObject = {a: 1};
+
+   function modifyArgs(stringArg, objectArg) {
+     stringArg += " world";
+     objectArg.a += 1;
+   }
+
+   modifyArgs(myString, myObject);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: func-args-modify2
+   #+BEGIN_SRC javascript :exports both :session functions-args-modify
+   myString
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: func-args-modify2
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: func-args-modify4
+   #+BEGIN_SRC javascript :exports both :session functions-args-modify
+   myObject
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: func-args-modify4
+
+   #+REVEAL: split
+
+   #+NAME: func-args-refs-modify-schema
+   #+BEGIN_SRC ditaa :file ./assets/build/func_args_refs_modify.png :cmdline -E :exports results
+   +-------+--+   +-----------+      +-------+--+   +-----------+
+   | myString |   | stringArg |      | myObject |   | objectArg |
+   +---+---+--+   +-----+-----+      +---+---+--+   +-----+-----+
+       |                |                |                |
+       +                +                +----------------+
+       |                |                |
+   +---+-------+  +-----+-------+    +---+-------+
+   |cF5D addrA |  |cDF5 addrC   |    |c5DF addrB |
+   +-----------+  +-------------+    +-----+-----+
+   | "Hello"   |  |"hello world"|    | a   |   2 |
+   +-----------+  +-------------+    +-----+-----+
+   #+END_SRC
+
+   #+BEGIN_NOTES
+   - since strings/numbers/... are immutables and values are unique in memory,
+     everything works as if they are passed by values, but they are passed by reference.
+   - people sometimes mis-explain by saying numbers/strings/... are passed by values,
+     but if it was the case, === would not work.
+   #+END_NOTES
+
+   #+REVEAL: split
+
+   Arguments are available in =arguments= variable
+
+   #+NAME: func-args-arguments
+   #+BEGIN_SRC javascript :exports both :session function-args
+   function myFunction(a, b, c) {
+     return {
+       arguments: arguments,
+       a: a, b: b, c: c,
+     };
+   }
+
+   myFunction("one", "two", "three");
+   #+END_SRC
+
+   #+REVEAL: split
+
+   Function arity is not checked
+
+   #+NAME: func-args-arity
+   #+BEGIN_SRC javascript :exports both :session function-args
+   myFunction.length;
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   Missing arguments are just undefined
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: func-args-arity2
+   #+BEGIN_SRC javascript :exports both :session function-args
+   myFunction("one", "two");
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: func-args-arity2
+
+   #+REVEAL: split
+
+   Extra arguments are also available in =arguments=
+
+   #+NAME: func-args-arity3
+   #+BEGIN_SRC javascript :exports both :session function-args
+   myFunction("one ", "two ", "three ", "four ");
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   You can use this to implement variable-arity functions
+
+   #+REVEAL: split
+
+   =arguments= is not an Array :(
+
+   #+NAME: func-args-array
+   #+BEGIN_SRC javascript :exports both :session function-args
+   function argumentsType() {
+     return Array.isArray(arguments);
+   }
+
+   argumentsType("one", "two");
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   You can't call Array methods (join, slice) on =arguments=
+
+   #+REVEAL: split
+
+   You must convert =arguments= to an Array first
+
+   #+NAME: func-args-array3
+   #+BEGIN_SRC javascript :exports both :session function-args
+   function argumentsToArray() {
+     return Array.prototype.slice.call(arguments);
+   }
+
+   argumentsToArray("Hello", "world");
+   #+END_SRC
+
+   #+BEGIN_NOTES
+   - Array.prototype.slice.call is the traditionnal way to convert arguments to array
+   - slice returns a copy of a portion of the array - whole array if no arguments
+   - slice works on enumerable objets like arguments
+   #+END_NOTES
+
+   #+REVEAL: split
+
+   ES6: arguments spread for variable-arity functions
+
+   #+NAME: func-args-es6-spread
+   #+BEGIN_SRC javascript :exports both :session function-args
+   function argSpread(a, b, ...c) {
+     return {a, b, c};
+   }
+
+   argSpread(1, 2, 3, 4, 5);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: func-args-es6-spread3
+   #+BEGIN_SRC javascript :exports both :session function-args
+   argSpread(1);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: func-args-es6-spread3
+
+   #+ATTR_REVEAL: :frag roll-in
+   Always use spread instead of =arguments=
+
+** Hoisting
+
+   Functions are hoisted like variables
+
+   #+NAME: funcs-hoist
+   #+BEGIN_SRC js
+   myFunction(1, 2);
+
+   function myFunction(a, b) {
+     return a + b;
+   }
+   #+END_SRC
+
+   #+BEGIN_NOTES
+   - you can use reference to a function before its definition in a source file
+   - this is cool to organize code, eg to publish module exports at the top of the module
+   #+END_NOTES
+
+** Closure
+
+   Functions can reference variables declared in parent scopes
+
+   #+NAME: funcs-closure
+   #+BEGIN_SRC javascript :exports both :session function-closure
+   var myClosedVar = "hello, world";
+
+   function myClosure() {
+     return "Closure: " + myClosedVar;
+   };
+
+   myClosure();
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-closure
+
+   #+BEGIN_NOTES
+   - functions that reference outside variables are called "closures".
+   - that's how you implement private scope in JS.
+   - that's how you implement memory leaks in JS :P
+   #+END_NOTES
+
+   #+REVEAL: split
+
+   How does it works ?
+
+   #+NAME: funcs-closure-work
+   #+BEGIN_SRC js
+   var myGlobal = "hello";
+   var anotherGlobal = "bye";
+
+   function myFunction(arg1, arg2) {
+     return myGlobal + arg1 + arg2;
+   }
+
+   myFunction(", ", "world");
+   #+END_SRC
+
+   #+REVEAL: split
+
+   At creation time
+
+   #+NAME: funcs-closure-compile
+   #+BEGIN_SRC ditaa :file ./assets/build/closure_compile.png :cmdline -E :exports results
+   +----------------------------------+      +----------------+
+   |function myFunction(arg1, arg2) { |      |c5DF References |
+   |   return myGlobal + arg1 + arg2; +------+----------------+         +-------+
+   | }                                |      |myGlobal        +---------+"hello"|
+   +----------------------------------+      +----------------+         +-------+
+   #+END_SRC
+
+   #+RESULTS: funcs-closure-compile
+   [[file:./assets/build/closure_compile.png]]
+
+   #+BEGIN_NOTES
+   - at creation time, JS links the function with a list of references to all the variables in parent scope the function needs to execute properly.
+   - this list + the function = closure
+   #+END_NOTES
+
+   #+REVEAL: split
+
+   At call time
+
+   #+NAME: funcs-closure-run
+   #+BEGIN_SRC ditaa :file ./assets/build/closure_run.png :cmdline -E :exports results
+   +----------------------------+
+   | myFunction(", ", "world"); |
+   +-------------+--------------+
+                 |
+                 v
+   +----------------------------------+      +----------------+
+   |function myFunction(arg1, arg2) { |      |c5DF References |
+   |   return myGlobal + arg1 + arg2; +------+----------------+         +-------+
+   | }                                |      |myGlobal        +---------+"hello"|
+   +----------------------------------+      +----------------+         +-------+
+                                             |arg1            +---------+", "   |
+                                             +----------------+         +-------+
+                                             |arg2            +---------+"world"|
+                                             +----------------+         +-------+
+   #+END_SRC
+
+   #+RESULTS: funcs-closure-run
+   [[file:./assets/build/closure_run.png]]
+
+   #+BEGIN_NOTES
+   - at call time, JS extends the list with the arguments references.
+   - then JS executes the function's body in the resulting context.
+   #+END_NOTES
+
+   #+REVEAL: split
+
+   Closures work a lot like thread stacks in multi-threaded languages
+
+   #+NAME: funcs-closure-thread
+   #+BEGIN_SRC js
+   var myVar = "hello";
+
+   setTimeout(function () {
+     // asynchronous callback "remembers"
+     // the current task's variables stack
+     console.log(myVar);
+   }, 1000);
+   #+END_SRC
+
+   #+BEGIN_NOTES
+   - closures implementation share a lot with thread stacks in other languages
+   - this is JS compensation mechanism for being single threaded
+   - closures are a way to "emulate" thread stack in a single-threaded runtime
+   - except here we should talk about "task stack"
+   #+END_NOTES
+   
+   #+REVEAL: split
+
+   Closures are how you implement private scope in Js
+
+   #+NAME: funcs-closure-private
+   #+BEGIN_SRC javascript :exports code :session function-closure
+   function createCounter() {
+     var count = 0;
+
+     return function incrementCounter() {
+       return ++count;
+     };
+   }
+
+   var myCounter = createCounter();
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-closure-private2
+   #+BEGIN_SRC javascript :exports both :session function-closure
+   myCounter();
+   #+END_SRC
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-closure-private2
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-closure-private3
+   #+BEGIN_SRC javascript :exports both :session function-closure
+   myCounter();
+   #+END_SRC
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-closure-private3
+
+   #+REVEAL: split
+
+   #+NAME: funcs-closure-private4
+   #+BEGIN_SRC js
+   function createCounter() {
+     var count = 0;
+
+     return function incrementCounter() {
+       return ++count;
+     };
+   }
+   #+END_SRC
+
+   =count= is never directly accessible to code outside =createCounter=
+
+   #+ATTR_REVEAL: :frag roll-in
+   But =count= persists after createCounter execution, inside =incrementCounter='s closure
+
+   #+NAME: funcs-closure-private5
+   #+BEGIN_SRC ditaa :file ./assets/build/closure_private.png :cmdline -E :exports results
+                             +----------------------------------+      +----------------+
+   +--------------------+    |function incrementCounter()       |      |c5DF References |
+   |cF5D myCounter()    +----+   return ++counter;              +------+----------------+         +-------+-+
+   +--------------------+    | }                                |      |count           +---------+ 0 -> 1  |
+                             +----------------------------------+      +----------------+         +-------+-+
+
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-closure-private5
+   [[file:./assets/build/closure_private.png]]
+
+   #+BEGIN_NOTES
+   - values referenced in closures are not garbage collected
+   - until the closure itself is garbage collected
+   - you can produce nice memory leaks with this :)
+   #+END_NOTES
+
+** High order functions
+
+   Functions are regular values in JS
+
+   #+ATTR_REVEAL: :frag (roll-in)
+   - you can pass a function-value as argument to a function
+   - you can return a function-value from a function
+
+   #+REVEAL: split
+
+   #+NAME: funcs-high-sample
+   #+BEGIN_SRC javascript :exports code :session function-high
+   function map(array, func) {
+     const result = [];
+
+     for(let i in array) {
+       result.push(func(array[i]));
+     }
+
+     return result;
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-high-sample2
+   #+BEGIN_SRC javascript :exports both :session function-high
+   map([1, 2, 3], function (item) { return item + 1; })
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-high-sample2
+
+   #+REVEAL: split
+
+   Higher-Order functions:
+   - take function-values as arguments
+   - return function-value
+
+   #+REVEAL: split
+
+   JS uses Higher-Order functions everywhere.
+
+   #+ATTR_REVEAL: :frag roll-in
+   All asynchronous functions that use callbacks.
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+BEGIN_SRC js :export code
+   setTimeout(function () {}, delayInMs);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   All functional methods on Array: map, filter, reduce
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+BEGIN_SRC js :export code
+   [1, 2, 3].map(function(item) { return item + 1; });
+   #+END_SRC
+
+*** IIFE
+
+    Immediately-Invoked Function Expressions
+
+    #+BEGIN_SRC javascript :exports both
+    (function (arg) {
+      return "Hello, " + arg;
+    })("world");
+    #+END_SRC
+
+    #+REVEAL: split
+
+    Why ?
+
+    #+ATTR_REVEAL: :frag roll-in
+    Before strict-mode and (modern) modules, it was a way to isolate scope
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+BEGIN_SRC js
+    (function myModule() {
+      // this var will be scoped inside the module
+      // no risk of conflict with global vars...
+      // no risk of external modifications...
+      var myInternalVar;
+
+      // the IIFE "module" returns the public API of the module
+      return {
+        myApiMethod: function () {
+          myInternalVar++;
+        }
+      }
+    })(dependencies)
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    You'll still see this in a lot of (legacy) code
+
+** =this=
+
+   All functions have =this=
+
+   #+NAME: funcs-this
+   #+BEGIN_SRC javascript :exports both :session function-this
+   function returnThis() {
+     return this;
+   }
+
+   returnThis() === global;
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-this
+
+   #+ATTR_REVEAL: :frag roll-in
+   By default, =this= is the =global/window= object
+
+   #+REVEAL: split
+
+   When called on an object...
+
+   #+NAME: funcs-this-object
+   #+BEGIN_SRC javascript :exports both :session function-this
+   var myObject = {
+     a: 1,
+     returnThis: returnThis,
+   };
+
+   myObject.returnThis() === myObject;
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-this-object
+
+   #+ATTR_REVEAL: :frag roll-in
+   =this= is "bound" to the object
+
+** =apply= & =call=
+
+  You can call a function on any object
+
+   #+NAME: funcs-apply
+   #+BEGIN_SRC javascript :exports code :session function-apply
+   function thisAndArgs(...args) {
+     return { "this": this, args: args };
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-apply-call
+   #+BEGIN_SRC javascript :exports both :session function-apply
+   thisAndArgs.call({ a: 1 }, "hello", "world");
+   #+END_SRC
+ 
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-apply-call
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-apply-apply
+   #+BEGIN_SRC javascript :exports both :session function-apply
+   thisAndArgs.apply({ a: 1 }, ["hello", "world"]);
+   #+END_SRC
+ 
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-apply-apply
+
+   #+BEGIN_NOTES
+   - to remember which is which : Apply starts with an 'A' like Array
+   #+END_NOTES
+
+   #+REVEAL: split
+
+   =apply= is often use to build proxys or decorators
+
+   #+NAME: funcs-apply-mod-args
+   #+BEGIN_SRC javascript :exports code :session function-apply
+   function dropFirstArg(func) {
+     return function(...args) {
+       return func.apply(this, args.slice(1));
+     };
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-apply-mod-args2
+   #+BEGIN_SRC javascript :exports code :session function-apply
+   function getFirstArgument(arg1) {
+     return arg1;
+   }
+
+   var getSecondArgument = dropFirstArg(getFirstArgument);
+   var getThirdArgument = dropFirstArg(getThirdArgument);
+   #+END_SRC
+
+   #+REVEAL: split
+
+   #+NAME: funcs-apply-mod-args3
+   #+BEGIN_SRC javascript :exports both :session function-apply
+   getFirstArgument(1, 2);
+   #+END_SRC
+
+   #+RESULTS: funcs-apply-mod-args3
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-apply-mod-args4
+   #+BEGIN_SRC javascript :exports both :session function-apply
+   getSecondArgument(1, 2);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-apply-mod-args4
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-apply-mod-args5
+   #+BEGIN_SRC javascript :exports both :session function-apply
+   getThirdArgument(1, 2);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-apply-mod-args5
+
+   #+REVEAL: split
+
+   #+NAME: funcs-apply-proxy
+   #+BEGIN_SRC javascript :exports code :session function-apply
+   function proxyOn(obj, func) {
+     return function(...args) {
+       return func.apply(obj, args);
+     };
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-apply-proxy2
+   #+BEGIN_SRC javascript :exports code :session function-apply
+   var baseObj = { base: "obj" };
+
+   var proxyObj = {
+     method: proxyOn(baseObj, thisAndArgs),
+   };
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-apply-proxy3
+   #+BEGIN_SRC javascript :exports both :session function-apply
+   proxyObj.method(1, 2 , 3);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-apply-proxy3
+
+   #+BEGIN_NOTES
+   - what's the point ? this the GoF patterns proxy/decorator/bridge...
+   #+END_NOTES
+
+** =bind=
+
+   =bind= can be used to link a function to an object and some arguments
+   
+   #+NAME: funcs-bind
+   #+BEGIN_SRC javascript :exports code :session function-bind
+   function thisAndArgs(...args) {
+     return { "this": this, args: args };
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   =bind= returns a new, partially-applied function
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-bind2
+   #+BEGIN_SRC javascript :exports code :session function-bind
+   var myObj = { a: 1 };
+
+   var myFunc = thisAndArgs.bind(myObj, 1, 2);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-bind3
+   #+BEGIN_SRC javascript :exports both :session function-bind
+   myFunc(3, 4, 5);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-bind3
+
+   #+REVEAL: split
+
+   =bind= can be used to implement partial application
+
+   #+NAME: funcs-partial
+   #+BEGIN_SRC javascript :exports code :session function-partial
+   function add(a, b) {
+     return a + b;
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-partial2
+   #+BEGIN_SRC javascript :exports both :session function-partial
+   var addFive = add.bind(null, 5);
+
+   [1, 2, 3].map(addFive);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-partial2
+
+** ES6: arguments spread
+
+   Spread can also be used on function calls
+
+   #+NAME: funcs-spread-mod
+   #+BEGIN_SRC javascript :exports code :session function-spread
+   function myFunc(a, b, c) {
+     return "" + a + b + c;
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-spread-mod2
+   #+BEGIN_SRC javascript :exports both :session function-spread
+   var args = [1, 2, 3];
+
+   myFunc(...args);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-spread-mod2
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-spread-mod3
+   #+BEGIN_SRC javascript :exports both :session function-spread
+   myFunc(...args.slice(1));
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-spread-mod3
+
+   #+ATTR_REVEAL: :frag roll-in
+   Spread replace most use-cases of =apply=
+
+** ES6: arrow functions
+
+   =this= is decided at call time
+
+   #+NAME: funcs-arrow
+   #+BEGIN_SRC javascript :exports code :session function-arrow
+   function returnThis() {
+     // we don't know the value of "this" at declaration time
+     return this;
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-arrow2
+   #+BEGIN_SRC javascript :exports both :session function-arrow
+   var myObj = {
+     hello: "world",
+     returnThis: returnThis,
+   };
+
+   // "this" value is decided here
+   myObj.returnThis();
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-arrow2
+
+   #+REVEAL: split
+
+   This poses a problem in all callbacks
+
+   #+NAME: funcs-arrow3
+   #+BEGIN_SRC js
+   {
+     logThis: function method() {
+       // here, "this" is the object on which method is called: "method.this"
+       setTimeout(function callback() {
+         // what's the value of "this" ???
+         // how can I access "method.this" ???
+       }, 0);
+     }
+   };
+   #+END_SRC
+
+   #+REVEAL: split
+
+   Old school solution
+
+   #+NAME: funcs-arrow4
+   #+BEGIN_SRC js
+   var myObj = {
+     logThis: function method() {
+       var self = this;
+       setTimeout(function callback() {
+         self.data = 42;
+       }, 0);
+     }
+   };
+   #+END_SRC
+
+   #+REVEAL: split
+
+   Enters arrow functions
+
+   #+NAME: funcs-arrow5
+   #+BEGIN_SRC javascript :exports code :session function-arrow
+   var returnThis = () => {
+     // "this" is bound at declaration time !
+
+     // it takes the current value of "this" in the declaration context
+
+     // which means, here "this === global"
+     return this;
+   };
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-arrow6
+   #+BEGIN_SRC javascript :exports both :session function-arrow
+   var myObj = {
+     hello: "world",
+     returnThis: returnThis,
+   };
+
+   myObj.returnThis() === global;
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-arrow6
+
+   #+ATTR_REVEAL: :frag roll-in
+   Arrow functions don't care which object they're called on.
+
+   #+REVEAL: split
+
+   How does this help ?
+
+   #+NAME: funcs-arrow7
+   #+BEGIN_SRC javascript :exports code :session function-arrow
+   var myObj = {
+     hello: "world",
+     returnThis: function method() {
+       return Promise.resolve()
+         .then(() => {
+           // "this" is the current value of "this" at declaration
+           // ie, in the context of the parent "method"
+           return this;
+         });
+     },
+   };
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-arrow8
+   #+BEGIN_SRC javascript :exports both :session function-arrow
+   myObj.returnThis();
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-arrow8
+
+   #+REVEAL: split
+
+   Always use =() => {}= on free functions & callbacks
+
+   #+ATTR_REVEAL: :frag roll-in
+   Always use =function() {}= on objects methods
+
+   #+REVEAL: split
+
+   By the way, =arguments= is not defined in arrow functions
+
+   #+BEGIN_SRC javascript :exports both
+   try {
+     (() => { return arguments; })(1, 2, 3);
+   } catch(e) {
+     `Error: ${e.message}`;
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   Always use arguments spread in arrow functions
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-arrow-9
+   #+BEGIN_SRC javascript :exports both
+   ((...args) => { return args; })(1, 2, 3);
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-arrow-9
