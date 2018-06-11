@@ -1,5 +1,5 @@
 ** Finding types of values
-   Aka. "typeof is useless".
+   Aka "typeof is useless"
 
 *** Nil values
     #+BEGIN_SRC js
@@ -7,19 +7,29 @@
     null
     #+END_SRC
 
+    #+ATTR_REVEAL: :frag roll-in
     What's the difference ?
-    #+NAME: typeof-nil
-    #+BEGIN_SRC js :exports results :results output :session basic-types
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+NAME: typeof-undefined
+    #+BEGIN_SRC javascript :exports both :session basic-types
     typeof(undefined);
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: typeof-undefined
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+NAME: typeof-null
+    #+BEGIN_SRC javascript :exports both :session basic-types
     typeof(null);
     #+END_SRC
 
     #+ATTR_REVEAL: :frag roll-in
-    #+RESULTS: typeof-nil
-
+    #+RESULTS: typeof-null
     
     #+ATTR_REVEAL: :frag roll-in
-    To test if a value exists:
+    To test if a value exists
 
     #+ATTR_REVEAL: :frag roll-in
     #+NAME: is-nil
@@ -37,83 +47,102 @@
 *** Booleans
 
     #+NAME: typeof-bool
-    #+BEGIN_SRC js :exports results :results output :session basic-types
+    #+BEGIN_SRC javascript :exports both :session basic-types
     typeof(true);
     #+END_SRC
-
-    #+RESULTS: typeof-bool
 
 *** Numbers
 
     #+NAME: typeof-number
-    #+BEGIN_SRC js :exports results :results output :session basic-types
+    #+BEGIN_SRC javascript :exports both :session basic-types
     typeof(5);
     #+END_SRC
 
-    #+RESULTS: typeof-number
+    #+ATTR_REVEAL: :frag roll-in
+    NaN
 
     #+ATTR_REVEAL: :frag roll-in
-    - NaN
     #+NAME: typeof-nan
-    #+BEGIN_SRC js :exports results :results output :session basic-types
+    #+BEGIN_SRC javascript :exports both :session basic-types
     typeof(NaN);
     #+END_SRC
 
     #+ATTR_REVEAL: :frag roll-in
     #+RESULTS: typeof-nan
 
-    #+ATTR_REVEAL: :frag roll-in
-    To test for NaN:
-
-    #+ATTR_REVEAL: :frag roll-in
-    #+NAME: is-nan
-    #+BEGIN_SRC js :exports code :results output :session basic-types
-    function isNaN(value) {
-      return value !== value;
-    }
-    #+END_SRC
-
-    #+NAME: is-nan-calls
-    #+BEGIN_SRC js :exports results :results output :session basic-types
-    isNaN(NaN);
-    isNaN(5);
-    isNaN(null);
-    #+END_SRC
-
-    #+ATTR_REVEAL: :frag roll-in
-    #+RESULTS: is-nan-calls
-
     #+BEGIN_NOTES
     - typeof NotANumber is 'number', of course :D
-    - NaN is the only thing not equal to itself in JS
     #+END_NOTES
+
+    #+REVEAL: split
+
+    How to test for NaN, the Cthulhu way
+
+    #+NAME: is-nan-cthulhu
+    #+BEGIN_SRC javascript :exports both :session basic-types
+    function isNaNByCthulhu(value) {
+      return value !== value;
+    }
+
+    isNaNByCthulhu(NaN);
+    #+END_SRC
+
+    #+BEGIN_NOTES
+    - NaN is the only thing not equal to itself in JS
+    - bonus points for not creating an isNan function in your code !
+      just put this test inline for extra fun
+    #+END_NOTES
+
+    #+REVEAL: split
+
+    How to test for NaN, the human way
+ 
+    #+NAME: is-nan
+    #+BEGIN_SRC javascript :exports both :session basic-types
+    isNaN(NaN);
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    By the way
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+NAME: is-nan2
+    #+BEGIN_SRC javascript :exports both :session basic-types
+    isNaN("45");
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+RESULTS: is-nan2
 
 *** Strings
 
     #+NAME: typeof-string
-    #+BEGIN_SRC js :exports results :results output :session basic-types
+    #+BEGIN_SRC javascript :exports both :session basic-types
     typeof("Hello, world");
     #+END_SRC
 
 *** Functions
 
     #+NAME: typeof-function
-    #+BEGIN_SRC js :exports results :results output :session function-types
+    #+BEGIN_SRC javascript :exports both :session basic-types
     typeof(function(){});
     #+END_SRC
 
 *** Arrays
 
-    Of course:
+    Of course
+
     #+NAME: typeof-array
-    #+BEGIN_SRC js :exports results :results output :session array-types
+    #+BEGIN_SRC javascript :exports both :session array-types
     typeof([1,2,3]);
     #+END_SRC
 
     #+ATTR_REVEAL: :frag roll-in
-    Since ES5:
+    Since ES5
+
+    #+ATTR_REVEAL: :frag roll-in
     #+NAME: is-array
-    #+BEGIN_SRC js :exports results :results output :session array-types
+    #+BEGIN_SRC javascript :exports both :session array-types
     Array.isArray([1,2,3]);
     #+END_SRC
 
@@ -127,27 +156,55 @@
 
 *** Objects
 
-    Lots of stuff are "objects":
+    Lots of stuff are "objects"
+
     #+NAME: typeof-object
-    #+BEGIN_SRC js :exports results :results output :session object-types
+    #+BEGIN_SRC javascript :exports both :session object-types
     typeof({});
+    #+END_SRC
+    #+NAME: typeof-object2
+    #+BEGIN_SRC javascript :exports both :session object-types
     typeof(null);
+    #+END_SRC
+    #+NAME: typeof-object3
+    #+BEGIN_SRC javascript :exports both :session object-types
     typeof([]);
     #+END_SRC
 
-    #+ATTR_REVEAL: :frag roll-in
-    Casting to string can help:
+    #+REVEAL: split
+
+    Casting to string can help ?
 
     #+NAME: typeof-obj-cast-string
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    String({});
-    String(null);
-    String([]);
+    #+BEGIN_SRC javascript :exports both :session object-types
+    "Object: '" + String({a: 1}) + "'\n" +
+    "Null:   '" + String(null) + "'\n" +
+    "Array:  '" + String([1, 2]) + "'";
+    #+END_SRC
+
+    #+RESULTS: typeof-obj-cast-string
+    : Object: ’[object Object]’
+    : Null:   ’null’
+    : Array:  ’1,2’
+
+    #+ATTR_REVEAL: :frag roll-in
+    Until someone overrides =toString()=
+
+    #+ATTR_REVEAL: :frag roll-in
+    #+NAME: typeof-obj-cast-string-oops
+    #+BEGIN_SRC javascript :exports both :session object-types
+    var myObject = {
+      toString() {
+        return "Just kiddin";
+      }
+    };
+
+    String(myObject);
     #+END_SRC
 
     #+ATTR_REVEAL: :frag roll-in
-    #+RESULTS: typeof-obj-cast-string
-
+    #+RESULTS: typeof-obj-cast-string-oops
+    
     #+BEGIN_NOTES
     - typeof is useless for objects, of course
     - only way to test for plain object is to cast to string, cool
@@ -156,25 +213,27 @@
 
     #+REVEAL: split
 
-    Only one sure way:
+    Only one sure way
+
     #+NAME: is-plain-objet
-    #+BEGIN_SRC js :exports code :results output :session object-types
+    #+BEGIN_SRC javascript :exports code :session toto
     function isPlainObject(value) {
       return typeof(value) === "object" &&
         value !== null &&
         !Array.isArray(value);
     }
+
+    isPlainObject({});
     #+END_SRC
 
-    #+NAME: is-plain-object-calls
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    isPlainObject({});
+    #+NAME: is-plain-object-calls2
+    #+BEGIN_SRC javascript :exports both :session toto
     isPlainObject(null);
+    #+END_SRC
+    #+NAME: is-plain-object-calls3
+    #+BEGIN_SRC javascript :exports both :session toto
     isPlainObject([]);
     #+END_SRC
-
-    #+ATTR_REVEAL: :frag roll-in
-    #+RESULTS: is-plain-object-calls
 
     #+BEGIN_NOTES
     - only way is to test if object && not array && not null
@@ -182,43 +241,80 @@
 
     #+REVEAL: split
 
-    Conclusion: never use typeof.
+    Conclusion: never use typeof
+
+    #+REVEAL: split
+
+    Lodash has many type helpers:
+
+    - isArray
+    - isDate
+    - isInteger
+    - isNaN
+    - isNil
+    - isPlainObject
+    - isRegex
 
 ** Casts
 
    [[file:assets/implicit_casts.jpg]]
 
+   #+BEGIN_NOTES
+   - to the right, the proud JS developer.
+   - to the left, the horrified reader.
+   #+END_NOTES
+
 *** Type Casts
 
-    Casts in JS are "fun":
+    Casts in JS are "fun"
+
     #+NAME: casts-fun
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
     "5" + 4 - 4;
+    #+END_SRC
+    #+NAME: casts-fun2
+    #+BEGIN_SRC javascript :exports both :session casts-types
       +"5" + 4 - 4;
+    #+END_SRC
+    #+NAME: casts-fun3
+    #+BEGIN_SRC javascript :exports both :session casts-types
       +"45hello";
     #+END_SRC
 
+    #+REVEAL: split
+
     #+NAME: casts-fun-shifts
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
     "3.14156" >> 0;
+    #+END_SRC
+    #+NAME: casts-fun-shifts2
+    #+BEGIN_SRC javascript :exports both :session casts-types
     "45hello" >> 0;
     #+END_SRC
 
-    #+ATTR_REVEAL: :frag roll-in
-    #+RESULTS: casts-fun-shifts
+    #+REVEAL: split
 
     #+NAME: casts-fun-objects
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
     []+{};
+    #+END_SRC
+    #+NAME: casts-fun-objects2
+    #+BEGIN_SRC javascript :exports both :session casts-types
     {}+[];
+    #+END_SRC
+    #+NAME: casts-fun-objects3
+    #+BEGIN_SRC javascript :exports both :session casts-types
     {}+{};
     #+END_SRC
+ 
+    #+REVEAL: split
+
+    JS implicit casts are totally random
 
     #+ATTR_REVEAL: :frag roll-in
-    #+RESULTS: casts-fun-objects
+    Never rely on implicit casts
 
     #+BEGIN_NOTES
-    - JS casts are unpredicable.
     - unfortunately a lot of JS devs try for clever instead of explicit.
     - you will come across code that works due to implicit/clever casts.
     #+END_NOTES
@@ -226,19 +322,48 @@
 *** To Number
 
     =Number=
+
     #+NAME: casts-number
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
     Number(3.14);
-    Number("3.14");
-    Number("3.14 hello");
-    Number("hello");
-    Number("");
-    Number(true);
-    Number({});
-    Number([]);
-    Number(null);
-    Number(undefined);
     #+END_SRC
+    #+NAME: casts-number2
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Number("3.14");
+    #+END_SRC
+    #+NAME: casts-number3
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Number("3.14 hello");
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    Okay...
+
+    #+REVEAL: split
+
+    #+NAME: casts-number4
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Number("hello");
+    #+END_SRC
+    #+NAME: casts-number5
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Number("");
+    #+END_SRC
+    #+NAME: casts-number6
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Number(true);
+    #+END_SRC
+    #+NAME: casts-number7
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Number({});
+    #+END_SRC
+    #+NAME: casts-number8
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Number([]);
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    ... nope
 
     #+BEGIN_NOTES
     - Number cast is shit.
@@ -247,18 +372,44 @@
     #+REVEAL: split
 
     =parseFloat=
+
     #+NAME: casts-parsefloat
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
     parseFloat("3.14");
-    parseFloat("3.14 hello");
-    parseFloat("hello");
-    parseFloat("");
-    parseFloat(true);
-    parseFloat({});
-    parseFloat([]);
-    parseFloat(null);
-    parseFloat(undefined);
     #+END_SRC
+    #+NAME: casts-parsefloat2
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    parseFloat("3.14 hello");
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    M'kay...
+
+    #+REVEAL: split
+
+    #+NAME: casts-parsefloat3
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    parseFloat("hello");
+    #+END_SRC
+    #+NAME: casts-parsefloat4
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    parseFloat("");
+    #+END_SRC
+    #+NAME: casts-parsefloat5
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    parseFloat(true);
+    #+END_SRC
+    #+NAME: casts-parsefloat6
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    parseFloat({});
+    #+END_SRC
+    #+NAME: casts-parsefloat7
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    parseFloat([]);
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    ... clear
 
     #+BEGIN_NOTES
     - parseFloat is more sensible.
@@ -268,14 +419,36 @@
     #+REVEAL: split
 
     =parseInt=
+
     #+NAME: casts-parseint
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
     parseInt("3");
+    #+END_SRC
+    #+NAME: casts-parseint2
+    #+BEGIN_SRC javascript :exports both :session casts-types
     parseInt("3.14");
+    #+END_SRC
+    #+NAME: casts-parseint3
+    #+BEGIN_SRC javascript :exports both :session casts-types
     parseInt("3 hello");
+    #+END_SRC
+
+    #+REVEAL: split
+
+    #+NAME: casts-parseint4
+    #+BEGIN_SRC javascript :exports both :session casts-types
     parseInt("hello");
+    #+END_SRC
+    #+NAME: casts-parseint5
+    #+BEGIN_SRC javascript :exports both :session casts-types
     parseInt("");
+    #+END_SRC
+    #+NAME: casts-parseint6
+    #+BEGIN_SRC javascript :exports both :session casts-types
     parseInt("0x3F", 16);
+    #+END_SRC
+    #+NAME: casts-parseint7
+    #+BEGIN_SRC javascript :exports both :session casts-types
     parseInt("321", 2);
     #+END_SRC
 
@@ -286,17 +459,40 @@
 *** To Strings
 
     =String=
+
     #+NAME: casts-string
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
     String("hello");
-    String(3.14);
-    String(NaN);
-    String(true);
-    String({a: 1});
-    String([1, 2]);
-    String(null);
-    String(undefined);
     #+END_SRC
+    #+NAME: casts-string2
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    String(3.14);
+    #+END_SRC
+    #+NAME: casts-string3
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    String(NaN);
+    #+END_SRC
+    #+NAME: casts-string4
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    String(true);
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    Okay...
+        
+    #+REVEAL: split
+
+    #+NAME: casts-string7
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    String({a: 1});
+    #+END_SRC
+    #+NAME: casts-string8
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    String([1, 2]);
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    ... nope
 
     #+BEGIN_NOTES
     - basic string-cast is shit for arrays.
@@ -305,17 +501,40 @@
     #+REVEAL: split
 
     =JSON.stringify=
+
     #+NAME: casts-stringify
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
     JSON.stringify("hello");
-    JSON.stringify(3.14);
-    JSON.stringify(NaN);
-    JSON.stringify(true);
-    JSON.stringify({a: 1});
-    JSON.stringify([1, 2]);
-    JSON.stringify(null);
-    JSON.stringify(undefined);
     #+END_SRC
+    #+NAME: casts-stringify2
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    JSON.stringify(3.14);
+    #+END_SRC
+    #+NAME: casts-stringify3
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    JSON.stringify(NaN);
+    #+END_SRC
+    #+NAME: casts-stringify4
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    JSON.stringify(true);
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    Okay...
+
+    #+REVEAL: split
+
+    #+NAME: casts-stringify5
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    JSON.stringify({a: 1});
+    #+END_SRC
+    #+NAME: casts-stringify6
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    JSON.stringify([1, 2]);
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    ... clear
 
     #+BEGIN_NOTES
     - JSON.stringify is the best way to print a JS value and know its type.
@@ -325,40 +544,39 @@
 
     #+REVEAL: split
 
-    For numbers:
-    #+BEGIN_SRC js :exports code :results output :session casts-types
-    var number = 9.656;
-    #+END_SRC
+    For numbers
 
     #+NAME: casts-tofixed
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    var number = 9.656;
+
     number.toFixed(0);
+    #+END_SRC
+    #+NAME: casts-tofixed2
+    #+BEGIN_SRC javascript :exports both :session casts-types
     number.toFixed(2);
+    #+END_SRC
+    #+NAME: casts-tofixed3
+    #+BEGIN_SRC javascript :exports both :session casts-types
     number.toFixed(4);
     #+END_SRC
 
-    #+ATTR_REVEAL: :frag roll-in
-    #+RESULTS: casts-tofixed
-
-    #+NAME: casts-toexpo
-    #+BEGIN_SRC js :exports results :results output :session casts-types
-    number.toExponential(0);
-    number.toExponential(2);
-    number.toExponential(4);
-    #+END_SRC
-
-    #+ATTR_REVEAL: :frag roll-in
-    #+RESULTS: casts-toexpo
+    #+REVEAL: split
 
     #+NAME: casts-toprecision
-    #+BEGIN_SRC js :exports results :results output :session casts-types
-    Number.ToPrecision();
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    var number = 9.656;
+
+    number.toPrecision();
+    #+END_SRC
+    #+NAME: casts-toprecision2
+    #+BEGIN_SRC javascript :exports both :session casts-types
     number.toPrecision(2);
+    #+END_SRC
+    #+NAME: casts-toprecision3
+    #+BEGIN_SRC javascript :exports both :session casts-types
     number.toPrecision(4);
     #+END_SRC
-
-    #+ATTR_REVEAL: :frag roll-in
-    #+RESULTS: casts-toprecision
 
     #+BEGIN_NOTES
     - Number has useful function to convert to fixed strings.
@@ -368,39 +586,101 @@
     #+REVEAL: split
 
     ES6 templates: basic cast to String
+
     #+NAME: casts-string-template
-    #+BEGIN_SRC js :exports results :results output :session casts-types
-    `string: ${3.14}`;
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    `string: ${"hello"}`;
+    #+END_SRC
+    #+NAME: casts-string-template2
+    #+BEGIN_SRC javascript :exports both :session casts-types
     `number: ${3.14}`;
+    #+END_SRC
+    #+NAME: casts-string-template3
+    #+BEGIN_SRC javascript :exports both :session casts-types
     `array: ${[1,2,3]}`;
+    #+END_SRC
+    #+NAME: casts-string-template4
+    #+BEGIN_SRC javascript :exports both :session casts-types
     `object: ${{a: 1, b: 2}}`;
-    `bool: ${3.14}`;
-    `null: ${3.14}`;
-    `undefined: ${3.14}`;
+    #+END_SRC
+    #+NAME: casts-string-template5
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    `bool: ${true}`;
     #+END_SRC
 
     #+BEGIN_NOTES
     - ES6 templates use basic string-cast.
     - use JSON.stringify in templates too.
+    - (always use string templates when building strings)
     #+END_NOTES
 
 *** To Booleans
 
     =Boolean=
+
     #+NAME: casts-bool
-    #+BEGIN_SRC js :exports results :results output :session casts-types
+    #+BEGIN_SRC javascript :exports both :session casts-types
     Boolean(true);
-    Boolean("hello");
-    Boolean("");
-    Boolean(3.14);
-    Boolean(0);
-    Boolean(NaN);
-    Boolean({});
-    Boolean([1, 2]);
-    Boolean([]);
+    #+END_SRC
+    #+NAME: casts-bool2
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Boolean(false);
+    #+END_SRC
+    #+NAME: casts-bool3
+    #+BEGIN_SRC javascript :exports both :session casts-types
     Boolean(null);
+    #+END_SRC
+    #+NAME: casts-bool4
+    #+BEGIN_SRC javascript :exports both :session casts-types
     Boolean(undefined);
     #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    Okay...
+
+    #+REVEAL: split
+
+    #+NAME: casts-bool-string
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Boolean("hello");
+    #+END_SRC
+    #+NAME: casts-bool-string2
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Boolean("");
+    #+END_SRC
+
+    #+REVEAL: split
+
+    #+NAME: casts-bool-number
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Boolean(3.14);
+    #+END_SRC
+    #+NAME: casts-bool-number2
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Boolean(0);
+    #+END_SRC
+    #+NAME: casts-bool-number3
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Boolean(NaN);
+    #+END_SRC
+
+    #+REVEAL: split
+
+    #+NAME: casts-bool-object
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Boolean({});
+    #+END_SRC
+    #+NAME: casts-bool-object2
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Boolean([]);
+    #+END_SRC
+    #+NAME: casts-bool-object3
+    #+BEGIN_SRC javascript :exports both :session casts-types
+    Boolean([1, 2]);
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    ... whatever
 
     #+BEGIN_NOTES
     - casts to Booleans are shit too. Compare "" with {} and []
@@ -408,13 +688,13 @@
 
     #+REVEAL: split
 
-    Don't try to be clever, be explicit.
+    Don't try to be clever, be explicit
 
     #+ATTR_REVEAL: :frag roll-in
-    Prefer explicit tests: =isNil()=, =isEmpty()=, etc.
+    Prefer explicit tests: =_.isNil()=, =_.isEmpty()=, etc
 
     #+ATTR_REVEAL: :frag roll-in
-    No perfect way to cast a value to Number in JS :-( =parseFloat()= is the most sensible.
+    No perfect way to cast values in JS :-( 
 
     #+ATTR_REVEAL: :frag roll-in
-    Use JSON.stringify/parse() to convert values to/from string.
+    Use JSON.stringify/parse() to convert values to/from string

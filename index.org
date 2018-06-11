@@ -7,6 +7,7 @@
 #+REVEAL_TRANS: none
 #+REVEAL_THEME: serif
 #+REVEAL_DEFAULT_FRAG_STYLE: appear
+#+REVEAL_EXTRA_CSS: ./theme.css
 #+REVEAL_EXTRA_CSS: ./local.css
 
 * Presentation & History
@@ -19,106 +20,8 @@
   #+INCLUDE: "./slides/vars.org"
 
 * Functions
-    Creation:
-    #+BEGIN_SRC js :exports code :results output :session function-types
-    function myFunction() {
-      console.log("This is my function !");
-    }
-    #+END_SRC
+  #+INCLUDE: "./slides/functions.org"
 
-    #+BEGIN_SRC js :exports results :results output :session function-types
-    myFunction();
-    #+END_SRC
-
-    #+BEGIN_NOTES
-    - can have names
-    #+END_NOTES
-
-    #+REVEAL: split
-
-    Arguments and return value:
-    #+BEGIN_SRC js :exports code :results output :session function-types
-    function myAdd(a, b) {
-      return a + b;
-    };
-    #+END_SRC
-
-    #+BEGIN_SRC js :exports results :results output :session function-types
-    myAdd("hello ", "world");
-    myAdd("hello ");
-    #+END_SRC
-
-    #+BEGIN_SRC js :exports results :results output :session function-types
-    myAdd.length;
-    #+END_SRC
-
-    #+BEGIN_NOTES
-    - can have arguments and return values
-    - no check on arguments number when called - args are undefined !
-    #+END_NOTES
-** Arguments
-   TODO: passed by reference, arity fn.length, extra/missing args, arguments value
-   args manipulation tricks, variable args
-** Hoisting
-   TODO: function are hoisted and that's great
-** Closure
-
-   #+REVEAL: split
-
-   Functions can reference variables declared in parent scopes.
-   #+BEGIN_SRC js :exports code :results output :session vars-local-scope
-   function myFunction() {
-     var myClosedVar = "hello, world";
-
-     return function myClosure() {
-       return myClosedVar;
-     };
-   }
-   var func = myFunction();
-   #+END_SRC
-
-   #+BEGIN_SRC js :exports results :results output :session vars-local-scope
-   func();
-   #+END_SRC
-
-   #+BEGIN_NOTES
-   - functions that reference outside variables are called "closures".
-   - that's how you implement private scope in JS.
-   - that's how you implement memory leaks in JS :P
-   #+END_NOTES
-
-   #+REVEAL: split
-
-   That's how you implement private scope in Js.
-   #+BEGIN_SRC js :exports code :results output :session vars-local-scope
-   function createCounter() {
-     var count = 0;
-
-     return function() {
-       return ++count;
-     };
-   }
-   var myCounter = createCounter();
-   #+END_SRC
-
-   #+BEGIN_SRC js :exports results :results output :session vars-local-scope
-   myCounter();
-   myCounter();
-   #+END_SRC
-    TODO: how it works, memory leak, comparison with thread stack
-** High order functions
-   TODO: callbacks args, closures return, functionnal algorithms
-** this
-   TODO: this keyword overview, default=global=window, object-method call
-   var me = this horror show on callbacks
-** apply & call
-   TODO: differences & when to use, args manipulation, this manipulation
-** ES6: arrow functions
-   TODO: possible syntaxes, this difference, use everywhere
-** ES6: arguments spread
-   TODO: variable arguments, args manipulation
-** ES6: arguments destructuring
-   TODO: how can I speak of this here without first speaking of arrays ?
 * Arrays
     Get:
     #+BEGIN_SRC js :exports results :results output :session array-types

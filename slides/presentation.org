@@ -1,13 +1,13 @@
 ** History overview
 
-   Brendan Eich created the language for Netscape in 1995.
+   Brendan Eich created the language for Netscape in 1995
 
-   - Netscape wanted a Scheme for the Web.
-   - Eich liked the Self language.
-   - Marketing imposed a Java-like syntax and "Java" in the name.
+   - Netscape wanted a Scheme for the Web
+   - Eich liked the Self language
+   - Marketing imposed a Java-like syntax and "Java" in the name
    
    #+ATTR_REVEAL: :frag roll-in
-   One design constraint: "you have no time".
+   One design constraint: "you have no time"
 
    #+BEGIN_NOTES
    - Scheme => functionnal properties (eg. first-class functions).
@@ -18,12 +18,12 @@
 
    #+REVEAL: split
 
-   Standardized since 1996 by ECMA => ECMAScript.
+   Standardized since 1996 by ECMA => ECMAScript
 
-   Goal: prevent Microsoft from implementing IE-specific features.
+   Goal: prevent Microsoft from implementing IE-specific features
 
    #+ATTR_REVEAL: :frag roll-in
-   Microsoft shipped XMLHttpRequest in 1999.
+   ⇒ Microsoft shipped XMLHttpRequest proprietary feature in 1999
 
    #+BEGIN_NOTES
    - XMLHttpRequest = XHR = most important evolution for JS ever.
@@ -31,7 +31,7 @@
 
    #+REVEAL: split
 
-   Let's simplify this:
+   Let's simplify this
    #+BEGIN_SRC dot :file ./assets/build/js_history.png :export results
    digraph G {
         rankdir=LR;
@@ -67,15 +67,15 @@
 ** Tools
 
    #+ATTR_REVEAL: :frag (roll-in)
-   - 2000 AJAX :: Microsoft implements XMLHttpRequest (XHR) in IE.
-   - 2006 JQuery :: first cross-platform library to simplify client dev.
-   - 2008-10 Web Applications :: Chrome/v8 + Node + Angular.
-   - 2015+ Language (r)evolution :: new ES6-7-8 standards, transpilers/compilers, derived languages.
+   - 2000 AJAX :: Microsoft implements XMLHttpRequest (XHR) in IE
+   - 2006 JQuery :: first cross-platform library to simplify client dev
+   - 2008-10 Web Applications :: Chrome/v8 + Node + Angular
+   - 2015+ Language (r)evolution :: new ES6-7-8 standards, transpilers/compilers, derived languages
 
    #+BEGIN_NOTES
-   - Ajax marks the start of dynamic web.
-   - JQuery is the first successful JS library.
-   - Web Applications: start of "serious" JS development.
+   - Ajax marks the start of dynamic web
+   - JQuery is the first successful JS library
+   - Web Applications: start of "serious" JS development
    - Languages: explain that JS is used as base for a lot of languages
      - Web Assembly
      - parasitic languages eg. Elm Clojurescript
@@ -89,4 +89,21 @@
    - Douglas Crockford, "father" of ES3.1, created JSLint.
    - first publication 2008.
    - there is a beautiful language hidden somewhere in JS.
+   #+END_NOTES
+
+** Utility libraries
+
+   Find yourself a good utility librairy:
+
+   #+ATTR_REVEAL: :frag (roll-in)
+   - [[http://underscorejs.org/][Underscore]]: old school.
+   - [[https://lodash.com/][Lodash]]: trending.
+   - [[https://ramdajs.com/][Ramda]]: FP-style, immutable.
+
+   #+BEGIN_NOTES
+   - find a good utility library to work around language quirks
+   - also provides polyfills for new language utilities
+   - underscore was the first popular solution
+   - lodash is more current and elegant
+   - ramda is very good for heavy FP-style programming, and enforce immutable data.
    #+END_NOTES

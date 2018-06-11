@@ -6,19 +6,22 @@
 /*     text-align: left; */
 /*     width: 100%; */
 /* } */
-
+body {
+    color: #181a26;
+    background-color: white;
+}
 .reveal .author {
     display: none;
 }
 
 .reveal pre {
-    background-color: #444;
-    color: white;
+    background-color: #181a26;
+    color: #ccc;
     padding: 5px 2px;
 }
-/* .reveal pre.example { */
-/*     background-color: #455; */
-/* } */
-.reveal pre.example::before {
-    content: "> ";
+.reveal pre.example {
+    color: #ff7f24;
 }
+/* .reveal pre.example::before { */
+/*     content: "> "; */
+/* } */
