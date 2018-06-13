@@ -593,7 +593,7 @@
    }
 
    var getSecondArgument = dropFirstArg(getFirstArgument);
-   var getThirdArgument = dropFirstArg(getThirdArgument);
+   var getThirdArgument = dropFirstArg(getSecondArgument);
    #+END_SRC
 
    #+REVEAL: split
