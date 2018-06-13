@@ -195,7 +195,7 @@
     #+BEGIN_SRC javascript :exports both :session object-types
     var myObject = {
       toString() {
-        return "Just kiddin";
+        return "null";
       }
     };
 
@@ -321,7 +321,7 @@
 
 *** To Number
 
-    =Number=
+    =Number()=
 
     #+NAME: casts-number
     #+BEGIN_SRC javascript :exports both :session casts-types
@@ -371,7 +371,7 @@
 
     #+REVEAL: split
 
-    =parseFloat=
+    =parseFloat()=
 
     #+NAME: casts-parsefloat
     #+BEGIN_SRC javascript :exports both :session casts-types
@@ -418,7 +418,7 @@
 
     #+REVEAL: split
 
-    =parseInt=
+    =parseInt()=
 
     #+NAME: casts-parseint
     #+BEGIN_SRC javascript :exports both :session casts-types
@@ -458,7 +458,7 @@
 
 *** To Strings
 
-    =String=
+    =String()=
 
     #+NAME: casts-string
     #+BEGIN_SRC javascript :exports both :session casts-types
@@ -500,7 +500,7 @@
 
     #+REVEAL: split
 
-    =JSON.stringify=
+    =JSON.stringify()=
 
     #+NAME: casts-stringify
     #+BEGIN_SRC javascript :exports both :session casts-types
@@ -616,7 +616,7 @@
 
 *** To Booleans
 
-    =Boolean=
+    =Boolean()=
 
     #+NAME: casts-bool
     #+BEGIN_SRC javascript :exports both :session casts-types

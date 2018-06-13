@@ -448,7 +448,7 @@
    JS uses Higher-Order functions everywhere.
 
    #+ATTR_REVEAL: :frag roll-in
-   All asynchronous functions that use callbacks.
+   All asynchronous functions use callbacks.
 
    #+ATTR_REVEAL: :frag roll-in
    #+BEGIN_SRC js :export code
@@ -456,7 +456,7 @@
    #+END_SRC
 
    #+ATTR_REVEAL: :frag roll-in
-   All functional methods on Array: map, filter, reduce
+   All loop methods on Array: map, filter, reduce
 
    #+ATTR_REVEAL: :frag roll-in
    #+BEGIN_SRC js :export code
@@ -806,7 +806,7 @@
 
    #+REVEAL: split
 
-   Enters arrow functions
+   Enter arrow functions
 
    #+NAME: funcs-arrow5
    #+BEGIN_SRC javascript :exports code :session function-arrow
@@ -859,7 +859,7 @@
    #+ATTR_REVEAL: :frag roll-in
    #+NAME: funcs-arrow8
    #+BEGIN_SRC javascript :exports both :session function-arrow
-   myObj.returnThis();
+   myObj.returnThis() === myObj;
    #+END_SRC
 
    #+ATTR_REVEAL: :frag roll-in

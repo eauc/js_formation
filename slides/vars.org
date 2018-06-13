@@ -365,7 +365,7 @@
    #+END_SRC
    #+NAME: vars-global-defs-4
    #+BEGIN_SRC javascript :exports both :session vars-global-scope
-   global.myNumber;
+   global.myBool;
    #+END_SRC
 
 *** Local scope
