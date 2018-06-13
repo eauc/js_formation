@@ -23,47 +23,8 @@
   #+INCLUDE: "./slides/functions.org"
 
 * Arrays
-    Get:
-    #+BEGIN_SRC js :exports results :results output :session array-types
-    myArray[0];
-    myArray[2];
-    #+END_SRC
+  #+INCLUDE: "./slides/arrays.org"
 
-    beyond last item:
-    #+BEGIN_SRC js :exports results :results output :session array-types
-    myArray[3];
-    #+END_SRC
-
-    #+BEGIN_NOTES
-    - arrays can contain different types
-    - accessing entries beyond the end returns undefined
-    - setting entries beyond the end returns sparse arrays
-    #+END_NOTES
-
-    Set:
-    #+BEGIN_SRC js :exports results :results output :session array-types
-    myArray[1] = null;
-    myArray;
-    #+END_SRC
-
-    beyond last item:
-    #+BEGIN_SRC js :exports results :results output :session array-types
-    myArray[5] = 5;
-    myArray;
-    #+END_SRC
-** Methods
-   TODO: basic methods (splice, slice, length, push, pop, concat...)
-   for(var in array)
-*** Array Equality
-** High order methods
-   TODO: filter, map, reduce
-** Typed Arrays
-   TODO: UInt8Array etc
-** ES6: destructuring
-   TODO: introduce destructuring, compare with ES5 code
-** ES6: spread
-   TODO: introduce array manipulations with spread
-   talk about immutability ?
 * Objects
 ** Properties
     Properties:
