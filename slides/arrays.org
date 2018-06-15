@@ -257,6 +257,10 @@
     #+ATTR_REVEAL: :frag roll-in
     #+RESULTS: arrays-reduce-schema
 
+    #+BEGIN_NOTES
+    - let's say we want to accumulate the sum of numbers in an Array
+    #+END_NOTES
+
     #+REVEAL: split
 
     Init
@@ -274,6 +278,11 @@
     +---+
     Initial Value
     #+END_SRC
+
+    #+BEGIN_NOTES
+    - first we choose the Array of numbers to accumulates,
+    - and the initial value (often the empty element, but no obligation)
+    #+END_NOTES
 
     #+REVEAL: split
 
@@ -361,11 +370,20 @@
 
     #+NAME: arrays-reduce
     #+BEGIN_SRC javascript :exports both
+    // Array
     [1, 2, 3, 4].reduce((result, item) => {
       // it's important to always return the new result
       return result + item;
-    }, 0);
+    }, 0 /* Initial value */);
     #+END_SRC
+
+    #+BEGIN_NOTES
+    - reduce is a method on the accumulation Array
+    - it takes a method that will be called for each item in the Array
+      - with the current (intermediary) result, and the item's value
+      - it must return the new intermediary result
+    - it also takes the initial value (the first call to the function will be with this value, and the first item)
+    #+END_NOTES
 
     #+REVEAL: split
 
@@ -376,6 +394,13 @@
     - the transformation operator (eg. =noop,inc=)
     - the aggregation operator (eg. =+,push=)
 
+      #+BEGIN_NOTES
+      - it's important to think of reduce with those 3 steps
+      - it makes choosing the correct reduce easier
+      - also, reduce is in fact a specialized case of transduce, which separates the 3 steps
+      - whereas in reduce, the transformation + aggregation are done by the same function
+      #+END_NOTES
+
     #+REVEAL: split
 
     - type of result: =Array=
@@ -384,10 +409,12 @@
 
     #+NAME: arrays-reduce2
     #+BEGIN_SRC javascript :exports both
+    // Array
     [1, 2, 3, 4].reduce((result, item) => {
-      result.push(item + 1)
+      const newItem = item + 1; // transformation
+      result.push(newItem) // aggregation
       return result;
-    }, []);
+    }, [] /* Initial value */);
     #+END_SRC
 
     #+REVEAL: split
@@ -398,12 +425,13 @@
 
     #+NAME: arrays-reduce3
     #+BEGIN_SRC javascript :exports both
+    // Array
     [1, 2, 3, 4].reduce((result, item) => {
-      if (item % 2 == 0) {
-        result.push(item);
+      if (item % 2 == 0) { // transformation
+        result.push(item); // aggregation
       }
       return result;
-    }, []);
+    }, [] /* Initial value */);
     #+END_SRC
 
     #+REVEAL: split
@@ -452,12 +480,15 @@
     #+NAME: arrays-map1
     #+BEGIN_SRC javascript :exports both
     [1, 2, 3, 4].map((item) => {
+      // the function must return the transformed value
       return item + 1;
     });
     #+END_SRC
 
     #+BEGIN_NOTES
-    - map is a specialised reduce
+    - map is a specialised reduce where:
+      - you can choose the transformation function
+      - the initial value/aggregation is forced to []/.push
     #+END_NOTES
 
 *** Filter
@@ -467,11 +498,11 @@
     - transformation: =if(isPair?)=
     - aggregation: =push=
 
-    #+NAME: arrays-map0
+    #+NAME: arrays-filter0
     #+BEGIN_SRC javascript :exports both
     [1, 2, 3, 4].reduce((result, item) => {
       if(item %2 === 0) {
-        result.push(item + 1)
+        result.push(item)
       }
       return result;
     }, []);
@@ -500,26 +531,37 @@
     =Filter=:
     - type of result: =Array=
     - transformation: =if(<yourPredicate>)=
-    - operator: =push=
+    - aggregation: =push=
 
-    #+NAME: arrays-map1
+    #+NAME: arrays-filter1
     #+BEGIN_SRC javascript :exports both
     [1, 2, 3, 4].filter((item) => {
+      // the function must return true/false
+      // filter cannot change the values of items in result
       return (item % 2) === 0;
     });
     #+END_SRC
 
     #+BEGIN_NOTES
-    - filter is a specialised reduce
+    - filter is a specialised reduce where:
+      - you can choose the predicate function
+      - the transformation function is forced to if(<predicate)
+      - the initial value/aggregation is forced to []/.push
     #+END_NOTES
 
     #+REVEAL: split
 
     When to use:
     #+ATTR_REVEAL: :frag (roll-in)
-    - transform each value in a list → map
-    - keep/remove values from a list → filter/reject
-    - aggregate values from a list → reduce
+    - map
+      - transforms each value in the array the same way
+      - does not change the array's length
+    - filter/reject
+      - keep/remove values from the array
+      - does not change the values
+    - reduce
+      - aggregate values from the array
+      - build/transform values by a series of operations
 
     #+REVEAL: split
 
