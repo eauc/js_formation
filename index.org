@@ -26,97 +26,11 @@
   #+INCLUDE: "./slides/arrays.org"
 
 * Objects
-** Properties
-    Properties:
-    #+BEGIN_SRC js :exports code :results output :session object-types
-    var myObject = {
-      a: 0,
-      1: "1",
-      null: 2,
-    };
-    #+END_SRC
+  #+INCLUDE: "./slides/objects.org"
 
-    List entries:
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    Object.keys(myObject);
-    Object.values(myObject);
-    #+END_SRC
+* Classes
+  #+INCLUDE: "./slides/classes.org"
 
-    #+REVEAL: split
-
-    Get:
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    myObject.a;
-    myObject[1];
-    myObject[null];
-    #+END_SRC
-
-    #+REVEAL: split
-
-    Set:
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    myObject.b = 3;
-    myObject[true] = 4;
-    myObject[undefined] = 5;
-    #+END_SRC
-
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    Object.keys(myObject);
-    Object.values(myObject);
-    #+END_SRC
-
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    myObject["b"];
-    myObject[true];
-    myObject[undefined];
-    #+END_SRC
-
-    #+REVEAL: split
-
-    Keys are cast to Strings:
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    myObject[{toto: 1}] = 5;
-    myObject[[1,2,3]] = 6;
-    #+END_SRC
-
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    Object.keys(myObject);
-    Object.values(myObject);
-    #+END_SRC
-
-    #+BEGIN_SRC js :exports results :results output :session object-types
-    myObject[{toto: 42}];
-    myObject[[1,2,3]];
-    #+END_SRC
-
-    #+BEGIN_NOTES
-    - you can add keys after creation
-    - keys are always cast to strings - so you better know your casts if you're writting this shit
-    - seriously, don't do this
-    #+END_NOTES
-*** Getting/Setting
-    TODO: ["prop"] .prop, dynamique
-    impact on performances
-*** Deleting
-    TODO: delete, = undefined
-    impact on performances
-*** Methods
-    TODO: invoke, consequences on this
-*** Object Equality
-** ES6: properties shortcut
-** Prototype
-   TODO: explain prototype chain
-   hasOwnProperty, for(var in object)
-** new & Contructor functions
-   TODO: explain how it works, traditionnal pattern
-   impact on performances
-** ES6: Object.create
-   TODO: easy prototype pattern
-** ES6: classes
-   TODO: for OOP fans, not hoisted :(
-** ES7: spread
-   TODO: introduce objects merge with spread
-   talk about immutability ?
 * Asynchronocity
 ** Execution model
    TODO: single threaded, asynchronous

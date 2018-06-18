@@ -499,7 +499,7 @@
    - so older JS engines are just ignoring it
    #+END_NOTES
 
-** ES6: const
+** =const=
 
    =const= is block-scoped
    
@@ -560,10 +560,10 @@
 
    #+NAME: var-const-reassign
    #+BEGIN_SRC javascript :exports both
-   const myValue = 42;
+   const myValue = 5;
 
    try {
-     myValue = 71;
+     myValue += 1;
    } catch(error) {
      `Error: ${error.message}`;
    }
@@ -619,7 +619,7 @@
    - const tells the reader that this variable's meaning will never change
    #+END_NOTES
 
-*** ES6: let
+*** =let=
 
    =let= is scoped the same way as =const=
 

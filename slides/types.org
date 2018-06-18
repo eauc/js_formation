@@ -42,6 +42,8 @@
 
     #+BEGIN_NOTES
     - typeof operator gives type of things
+    - unfortunately in JS undefined is the mostly the only recognized nil-value
+    - try to avoid null
     #+END_NOTES
 
 *** Booleans
@@ -103,16 +105,22 @@
     #+END_SRC
 
     #+ATTR_REVEAL: :frag roll-in
-    By the way
+    Or
 
     #+ATTR_REVEAL: :frag roll-in
     #+NAME: is-nan2
     #+BEGIN_SRC javascript :exports both :session basic-types
-    isNaN("45");
+    Number.isNaN(NaN);
     #+END_SRC
 
     #+ATTR_REVEAL: :frag roll-in
     #+RESULTS: is-nan2
+
+    #+BEGIN_NOTES
+    - isNaN() returns true for everything that can't be converted to a number (undefined, "toto")
+    - isNaN() returns false for everything that can be converted ("45")
+    - Number.isNaN() returns true only for NaN, false otherwise
+    #+END_NOTES
 
 *** Strings
 

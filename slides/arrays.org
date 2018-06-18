@@ -575,6 +575,20 @@
     #+ATTR_REVEAL: :frag roll-in
     Lodash has a lot of arrays functions
 
+*** ForEach
+
+    ForEach (aka each):
+    - is very close to =for(var i in myArray) {}=
+    - has no return value
+    - should (rarely) be used, only for side effects
+
+   #+NAME: arrays-foreach
+   #+BEGIN_SRC javascript :exports code
+   messages.forEach((msg) => {
+     socket.send(JSON.stringify(msg));
+   });
+   #+END_SRC
+
 ** Destructuring
 
    Some code in ES5

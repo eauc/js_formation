@@ -1,0 +1,10 @@
+** Prototype
+   TODO: explain prototype chain
+   hasOwnProperty, for(var in object)
+** new & Contructor functions
+   TODO: explain how it works, traditionnal pattern
+   impact on performances
+** ES6: Object.create
+   TODO: easy prototype pattern
+** ES6: classes
+   TODO: for OOP fans, not hoisted :(

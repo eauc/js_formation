@@ -209,10 +209,18 @@
 
    #+NAME: funcs-hoist
    #+BEGIN_SRC js
-   myFunction(1, 2);
+   function createUser() {
+     return {
+       getName: getName,
+       getAge: getAge,
+     };
 
-   function myFunction(a, b) {
-     return a + b;
+     function getName() {
+       return this.name;
+     }
+     function getAge() {
+       return this.age;
+     }
    }
    #+END_SRC
 
@@ -421,7 +429,8 @@
      const result = [];
 
      for(let i in array) {
-       result.push(func(array[i]));
+       let item = func(array[i]);
+       result.push(item);
      }
 
      return result;
@@ -452,7 +461,7 @@
 
    #+ATTR_REVEAL: :frag roll-in
    #+BEGIN_SRC js :export code
-   setTimeout(function () {}, delayInMs);
+   setTimeout(function () { log("Coucouc"); }, 100 /* delayInMs */);
    #+END_SRC
 
    #+ATTR_REVEAL: :frag roll-in
@@ -482,7 +491,7 @@
 
     #+ATTR_REVEAL: :frag roll-in
     #+BEGIN_SRC js
-    (function myModule() {
+    (function myModule(jQuery, lodash) {
       // this var will be scoped inside the module
       // no risk of conflict with global vars...
       // no risk of external modifications...
@@ -494,7 +503,7 @@
           myInternalVar++;
         }
       }
-    })(dependencies)
+    })($, _)
     #+END_SRC
 
     #+ATTR_REVEAL: :frag roll-in
@@ -710,7 +719,7 @@
    #+ATTR_REVEAL: :frag roll-in
    #+RESULTS: funcs-partial2
 
-** ES6: arguments spread
+** Arguments spread
 
    Spread can also be used on function calls
 
@@ -744,7 +753,53 @@
    #+ATTR_REVEAL: :frag roll-in
    Spread replace most use-cases of =apply=
 
-** ES6: arrow functions
+** Default arguments
+
+   In ES6
+
+   #+NAME: funcs-default-args
+   #+BEGIN_SRC javascript :exports code :session function-default-args
+   function myFunc(a, b = 1, c = "world") {
+     return {
+       a: a,
+       b: b,
+       c: c,
+     };
+   }
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-default-args1
+   #+BEGIN_SRC javascript :exports both :session function-default-args
+   myFunc("hello");
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-default-args1
+   : { a: ’hello’, b: 1, c: ’world’ }
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+NAME: funcs-default-args2
+   #+BEGIN_SRC javascript :exports both :session function-default-args
+   myFunc("hello", undefined, "Paris");
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   #+RESULTS: funcs-default-args2
+
+   #+REVEAL: split
+
+   Beware...
+
+   #+NAME: funcs-default-args3
+   #+BEGIN_SRC javascript :exports both :session function-default-args
+   myFunc("hello", null, "Paris");
+   #+END_SRC
+
+   #+ATTR_REVEAL: :frag roll-in
+   Default argument is only used instead when real argument is =undefined=
+
+** Arrow functions
 
    =this= is decided at call time
 
