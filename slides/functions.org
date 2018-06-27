@@ -30,7 +30,7 @@
     +---+-------+                     +---+-------+
     |cF5D addrA |                     |c5DF addrB |
     +-----------+                     +-----+-----+
-    | "Hello"   |                     | a   |   1 |
+    | "hello"   |                     | a   |   1 |
     +-----------+                     +-----+-----+
 
     #+END_SRC
@@ -83,7 +83,7 @@
    +---+-------+  +-----+-------+    +---+-------+
    |cF5D addrA |  |cDF5 addrC   |    |c5DF addrB |
    +-----------+  +-------------+    +-----+-----+
-   | "Hello"   |  |"hello world"|    | a   |   2 |
+   | "hello"   |  |"hello world"|    | a   |   2 |
    +-----------+  +-------------+    +-----+-----+
    #+END_SRC
 
@@ -208,7 +208,7 @@
    Functions are hoisted like variables
 
    #+NAME: funcs-hoist
-   #+BEGIN_SRC js
+   #+BEGIN_SRC javascript
    function createUser() {
      return {
        getName: getName,
@@ -235,11 +235,15 @@
 
    #+NAME: funcs-closure
    #+BEGIN_SRC javascript :exports both :session function-closure
-   var myClosedVar = "hello, world";
+   function parentScope() {
+     var myClosedVar = "hello, world";
 
-   function myClosure() {
-     return "Closure: " + myClosedVar;
-   };
+     return function childScope() {
+       return "Closure: " + myClosedVar;
+     };
+   }
+
+   var myClosure = parentScope();
 
    myClosure();
    #+END_SRC
@@ -258,15 +262,20 @@
    How does it works ?
 
    #+NAME: funcs-closure-work
-   #+BEGIN_SRC js
-   var myGlobal = "hello";
-   var anotherGlobal = "bye";
+   #+BEGIN_SRC javascript
+   function parentScope() {
+     var myParentVar = "hello";
+     var anotherParentVar = "bye";
 
-   function myFunction(arg1, arg2) {
-     return myGlobal + arg1 + arg2;
+     function childScope(arg) {
+       var childVar = " the ";
+       return myParentVar + childVar + arg;
+     }
    }
 
-   myFunction(", ", "world");
+   var myFunction = parentScope();
+
+   myFunction("world");
    #+END_SRC
 
    #+REVEAL: split
@@ -275,11 +284,20 @@
 
    #+NAME: funcs-closure-compile
    #+BEGIN_SRC ditaa :file ./assets/build/closure_compile.png :cmdline -E :exports results
-   +----------------------------------+      +----------------+
-   |function myFunction(arg1, arg2) { |      |c5DF References |
-   |   return myGlobal + arg1 + arg2; +------+----------------+         +-------+
-   | }                                |      |myGlobal        +---------+"hello"|
-   +----------------------------------+      +----------------+         +-------+
+   +----------------------------------+      +------------------+
+   |function parentScope() {          |      |cD5F Parent Scope |
+   |  ...                             +------+------------------+       +-------+
+   |}                                 |      |myParentVar       +-------+"hello"|
+   +----------------+-----------------+      |anotherParentVar  |       |"bye"  |
+                    |                        +-------+----------+       +-------+
+                    |                                |
+                    v                                v
+   +-------------------------------------+      +----------------+
+   |function myFunction(arg) {           |      |c5DF References |
+   |   var childVar = " the ";           +------+----------------+         +-------+
+   |   return myGlobal + childVar + arg; |      |myParentVar     +---------+"hello"|
+   | }                                   |      +----------------+         +-------+
+   +-------------------------------------+      
    #+END_SRC
 
    #+RESULTS: funcs-closure-compile
@@ -296,20 +314,29 @@
 
    #+NAME: funcs-closure-run
    #+BEGIN_SRC ditaa :file ./assets/build/closure_run.png :cmdline -E :exports results
-   +----------------------------+
-   | myFunction(", ", "world"); |
-   +-------------+--------------+
+   +----------------------+
+   | myFunction("world"); |
+   +----------------------+
                  |
                  v
-   +----------------------------------+      +----------------+
-   |function myFunction(arg1, arg2) { |      |c5DF References |
-   |   return myGlobal + arg1 + arg2; +------+----------------+         +-------+
-   | }                                |      |myGlobal        +---------+"hello"|
-   +----------------------------------+      +----------------+         +-------+
-                                             |arg1            +---------+", "   |
-                                             +----------------+         +-------+
-                                             |arg2            +---------+"world"|
-                                             +----------------+         +-------+
+   +-------------------------------------+      +----------------+
+   |function myFunction(arg) {           |      |c5DF References |
+   |   var childVar = " the ";           +------+----------------+         +--------+
+   |   return myGlobal + childVar + arg; |      |myGlobal        +---------+"hello" |
+   | }                                   |      +----------------+         +--------+
+   +--------------+----------------------+      |arg             +---------+"world" |
+                  |                             +----------------+         +--------+
+                  |                          
+                  v
+   +-------------------------------------+      +----------------+
+   |var childVar = " the ";              |      |c5DF References |
+   |return myGlobal + childVar + arg;    +------+----------------+         +--------+
+   +-------------------------------------+      |myGlobal        +---------+"hello" |
+                                                +----------------+         +--------+
+                                                |arg             +---------+"world" |
+                                                +----------------+         +--------+
+                                                |childVar        +---------+" the " | 
+                                                +----------------+         +--------+
    #+END_SRC
 
    #+RESULTS: funcs-closure-run
@@ -325,14 +352,16 @@
    Closures work a lot like thread stacks in multi-threaded languages
 
    #+NAME: funcs-closure-thread
-   #+BEGIN_SRC js
-   var myVar = "hello";
+   #+BEGIN_SRC javascript
+   function parentScope() {
+     var myVar = "hello";
 
-   setTimeout(function () {
-     // asynchronous callback "remembers"
-     // the current task's variables stack
-     console.log(myVar);
-   }, 1000);
+     setTimeout(function () {
+       // asynchronous callback "remembers"
+       // the current stack's variables
+       console.log(myVar);
+     }, 1000);
+   }
    #+END_SRC
 
    #+BEGIN_NOTES
@@ -378,7 +407,7 @@
    #+REVEAL: split
 
    #+NAME: funcs-closure-private4
-   #+BEGIN_SRC js
+   #+BEGIN_SRC javascript
    function createCounter() {
      var count = 0;
 
@@ -395,11 +424,11 @@
 
    #+NAME: funcs-closure-private5
    #+BEGIN_SRC ditaa :file ./assets/build/closure_private.png :cmdline -E :exports results
-                             +----------------------------------+      +----------------+
-   +--------------------+    |function incrementCounter()       |      |c5DF References |
-   |cF5D myCounter()    +----+   return ++counter;              +------+----------------+         +-------+-+
-   +--------------------+    | }                                |      |count           +---------+ 0 -> 1  |
-                             +----------------------------------+      +----------------+         +-------+-+
+                             +----------------------------------+      +---------------------+
+   +--------------------+    |function incrementCounter()       |      |c5DF "Private Scope" |
+   |cF5D myCounter()    +----+   return ++counter;              +------+---------------------+     +-------+-+
+   +--------------------+    | }                                |      |count                +-----+ 0 -> 1  |
+                             +----------------------------------+      +---------------------+     +-------+-+
 
    #+END_SRC
 
@@ -460,7 +489,7 @@
    All asynchronous functions use callbacks.
 
    #+ATTR_REVEAL: :frag roll-in
-   #+BEGIN_SRC js :export code
+   #+BEGIN_SRC javascript :export code
    setTimeout(function () { log("Coucouc"); }, 100 /* delayInMs */);
    #+END_SRC
 
@@ -468,7 +497,7 @@
    All loop methods on Array: map, filter, reduce
 
    #+ATTR_REVEAL: :frag roll-in
-   #+BEGIN_SRC js :export code
+   #+BEGIN_SRC javascript :export code
    [1, 2, 3].map(function(item) { return item + 1; });
    #+END_SRC
 
@@ -490,7 +519,7 @@
     Before strict-mode and (modern) modules, it was a way to isolate scope
 
     #+ATTR_REVEAL: :frag roll-in
-    #+BEGIN_SRC js
+    #+BEGIN_SRC javascript
     (function myModule(jQuery, lodash) {
       // this var will be scoped inside the module
       // no risk of conflict with global vars...
@@ -831,7 +860,7 @@
    This poses a problem in all callbacks
 
    #+NAME: funcs-arrow3
-   #+BEGIN_SRC js
+   #+BEGIN_SRC javascript
    {
      logThis: function method() {
        // here, "this" is the object on which method is called: "method.this"
@@ -848,7 +877,7 @@
    Old school solution
 
    #+NAME: funcs-arrow4
-   #+BEGIN_SRC js
+   #+BEGIN_SRC javascript
    var myObj = {
      logThis: function method() {
        var self = this;
