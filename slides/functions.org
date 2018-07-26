@@ -265,11 +265,10 @@
    #+BEGIN_SRC javascript
    function parentScope() {
      var myParentVar = "hello";
-     var anotherParentVar = "bye";
 
      function childScope(arg) {
-       var childVar = " the ";
-       return myParentVar + childVar + arg;
+       var localVar = " the ";
+       return myParentVar + localVar + arg;
      }
    }
 
@@ -288,16 +287,16 @@
    |function parentScope() {          |      |cD5F Parent Scope |
    |  ...                             +------+------------------+       +-------+
    |}                                 |      |myParentVar       +-------+"hello"|
-   +----------------+-----------------+      |anotherParentVar  |       |"bye"  |
-                    |                        +-------+----------+       +-------+
+   +----------------+-----------------+      +-------+----------+       +-------+
+                    |                                |
                     |                                |
                     v                                v
-   +-------------------------------------+      +----------------+
-   |function myFunction(arg) {           |      |c5DF References |
-   |   var childVar = " the ";           +------+----------------+         +-------+
-   |   return myGlobal + childVar + arg; |      |myParentVar     +---------+"hello"|
-   | }                                   |      +----------------+         +-------+
-   +-------------------------------------+      
+   +----------------------------------------+   +----------------+
+   |function myFunction(arg) {              |   |c5DF References |
+   |   var localVar = " the ";              +---+----------------+         +-------+
+   |   return myParentVar + localVar + arg; |   |myParentVar     +---------+"hello"|
+   | }                                      |   +----------------+         +-------+
+   +----------------------------------------+      
    #+END_SRC
 
    #+RESULTS: funcs-closure-compile
@@ -319,23 +318,23 @@
    +----------------------+
                  |
                  v
-   +-------------------------------------+      +----------------+
-   |function myFunction(arg) {           |      |c5DF References |
-   |   var childVar = " the ";           +------+----------------+         +--------+
-   |   return myGlobal + childVar + arg; |      |myGlobal        +---------+"hello" |
-   | }                                   |      +----------------+         +--------+
-   +--------------+----------------------+      |arg             +---------+"world" |
-                  |                             +----------------+         +--------+
+   +----------------------------------------+      +----------------+
+   |function myFunction(arg) {              |      |c5DF References |
+   |   var localVar = " the ";              +------+----------------+         +--------+
+   |   return myParentVar + localVar + arg; |      |myParentVar     +---------+"hello" |
+   | }                                      |      +----------------+         +--------+
+   +--------------+-------------------------+      |arg             +---------+"world" |
+                  |                                +----------------+         +--------+
                   |                          
                   v
    +-------------------------------------+      +----------------+
-   |var childVar = " the ";              |      |c5DF References |
-   |return myGlobal + childVar + arg;    +------+----------------+         +--------+
-   +-------------------------------------+      |myGlobal        +---------+"hello" |
+   |var localVar = " the ";              |      |c5DF References |
+   |return myParentVar + localVar + arg; +------+----------------+         +--------+
+   +-------------------------------------+      |myParentVar     +---------+"hello" |
                                                 +----------------+         +--------+
                                                 |arg             +---------+"world" |
                                                 +----------------+         +--------+
-                                                |childVar        +---------+" the " | 
+                                                |localVar        +---------+" the " | 
                                                 +----------------+         +--------+
    #+END_SRC
 
@@ -805,7 +804,6 @@
 
    #+ATTR_REVEAL: :frag roll-in
    #+RESULTS: funcs-default-args1
-   : { a: ’hello’, b: 1, c: ’world’ }
 
    #+ATTR_REVEAL: :frag roll-in
    #+NAME: funcs-default-args2
@@ -979,3 +977,40 @@
 
    #+ATTR_REVEAL: :frag roll-in
    #+RESULTS: funcs-arrow-9
+** Exercise: Currying
+
+   Given
+
+   #+NAME: funcs-exercise-currying
+   #+BEGIN_SRC javascript :exports code
+   function add2(a, b) {
+     return a + b;
+   }
+   function add3(a, b, c) {
+     return a + b + c;
+   }
+   #+END_SRC
+
+   #+REVEAL: split
+
+   Implement add2curried/add3curried:
+
+   #+NAME: funcs-exercise-currying-2
+   #+BEGIN_SRC javascript :exports code
+   add2(a, b) === add2curied(a)(b)
+   add3(a, b, c) === add3curied(a)(b)(c)
+   #+END_SRC
+
+   #+REVEAL: split
+
+   Implement curry2/curry3:
+
+   #+NAME: funcs-exercise-currying-2
+   #+BEGIN_SRC javascript :exports code
+   add2(a, b) === curry2(add2)(a)(b)
+   add3(a, b, c) === curry3(add3)(a)(b)(c)
+   #+END_SRC
+
+   #+REVEAL: split
+   Implement curry for any-arity function
+
